@@ -3,1127 +3,1255 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Planejador de Viagens Europa 2026–2027</title>
+  <title>Planejador visual de viagens Europa 2026–2027</title>
   <style>
     :root {
-      --bg: #f4efe5;
-      --paper: #fffaf1;
-      --paper-2: #fffdf8;
-      --ink: #25221c;
-      --muted: #706858;
-      --line: #ded2bd;
-      --gold: #b88938;
-      --green: #587858;
-      --blue: #55748e;
-      --red: #9d5b4e;
-      --shadow: 0 18px 48px rgba(63, 48, 24, 0.13);
-      --radius: 24px;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-2: #eef3f8;
+      --text: #142033;
+      --muted: #627084;
+      --line: #dbe3ec;
+      --primary: #2457c5;
+      --primary-2: #123b87;
+      --accent: #0f8f83;
+      --warning: #b7791f;
+      --danger: #b42318;
+      --success: #16794c;
+      --shadow: 0 18px 45px rgba(20, 32, 51, 0.10);
+      --shadow-soft: 0 10px 25px rgba(20, 32, 51, 0.08);
+      --radius: 22px;
+      --radius-sm: 14px;
+      --max: 1240px;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-
     body {
       margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at 10% 0%, #fff7e6 0, #f4efe5 42%, #ebe2d1 100%);
-      color: var(--ink);
-      line-height: 1.45;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(36,87,197,0.16), transparent 34%),
+        radial-gradient(circle at 80% 10%, rgba(15,143,131,0.13), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.5;
     }
 
-    .app {
-      max-width: 1320px;
-      margin: 0 auto;
-      padding: 24px 16px 80px;
-    }
+    a { color: inherit; }
+    button, input, select, textarea { font: inherit; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 18px; }
 
     .hero {
-      position: relative;
-      overflow: hidden;
-      border-radius: 34px;
-      min-height: 390px;
-      padding: 34px;
-      box-shadow: var(--shadow);
+      padding: 42px 0 28px;
       color: white;
       background:
-        linear-gradient(135deg, rgba(20, 18, 15, 0.78), rgba(20, 18, 15, 0.18)),
-        url("https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1800&q=85") center/cover;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 28px;
+        linear-gradient(135deg, rgba(12,27,59,0.97), rgba(23,57,119,0.93)),
+        linear-gradient(90deg, #0c1b3b, #2457c5);
+      border-bottom-left-radius: 34px;
+      border-bottom-right-radius: 34px;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
     }
-
-    .eyebrow {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.14);
-      border: 1px solid rgba(255,255,255,0.28);
-      backdrop-filter: blur(10px);
-      font-weight: 800;
-      font-size: 13px;
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      right: -120px; top: -130px;
+      background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 68%);
+      pointer-events: none;
     }
-
-    h1 {
-      margin: 16px 0 12px;
-      max-width: 900px;
-      font-size: clamp(34px, 5.4vw, 72px);
-      line-height: 0.94;
-      letter-spacing: -0.065em;
-    }
-
-    .hero p {
-      max-width: 820px;
-      margin: 0;
-      color: rgba(255,255,255,0.88);
-      font-size: 17px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 24px;
-    }
-
-    button, .btn {
+    .hero-grid { display: grid; grid-template-columns: 1.35fr 0.65fr; gap: 24px; align-items: end; position: relative; z-index: 1; }
+    .eyebrow { display: inline-flex; gap: 8px; align-items: center; padding: 7px 12px; background: rgba(255,255,255,0.13); border: 1px solid rgba(255,255,255,0.22); border-radius: 999px; color: #dfeaff; font-weight: 700; font-size: 13px; }
+    h1 { font-size: clamp(32px, 5vw, 58px); line-height: 1.03; margin: 18px 0 12px; letter-spacing: -1.4px; }
+    .subtitle { max-width: 780px; color: #d9e5ff; font-size: clamp(16px, 2vw, 20px); margin: 0 0 22px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+    .btn {
       border: 0;
       border-radius: 999px;
       padding: 11px 16px;
-      font-weight: 850;
+      background: var(--primary);
+      color: white;
+      font-weight: 800;
       cursor: pointer;
-      font-size: 14px;
-      transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
-      white-space: nowrap;
+      box-shadow: 0 10px 20px rgba(36,87,197,0.22);
+      transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 26px rgba(36,87,197,0.26); }
+    .btn.secondary { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.28); box-shadow: none; }
+    .btn.ghost { background: var(--surface-2); color: var(--text); box-shadow: none; }
+    .btn.danger { background: var(--danger); }
+    .btn.success { background: var(--success); }
+    .btn.small { padding: 8px 12px; font-size: 13px; }
+
+    .summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .summary-card {
+      padding: 16px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.11);
+      border-radius: var(--radius-sm);
+      backdrop-filter: blur(10px);
+    }
+    .summary-card span { display: block; color: #cbd9f5; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+    .summary-card strong { display: block; margin-top: 6px; font-size: 22px; }
+
+    section { padding: 34px 0; }
+    .section-title { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    .section-title h2 { font-size: clamp(24px, 3vw, 36px); margin: 0; letter-spacing: -.7px; }
+    .section-title p { color: var(--muted); margin: 4px 0 0; max-width: 760px; }
+
+    .notice {
+      padding: 14px 16px;
+      background: #fff7e8;
+      border: 1px solid #f2d59f;
+      color: #6f4a10;
+      border-radius: var(--radius-sm);
+      margin: 16px 0;
     }
 
-    button:hover, .btn:hover { transform: translateY(-1px); }
-    .primary { background: #fffaf1; color: #27231c; box-shadow: 0 12px 28px rgba(0,0,0,0.20); }
-    .ghost { background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.28); backdrop-filter: blur(8px); }
-    .danger { background: #f2d7cf; color: #74382f; }
-    .soft { background: #efe4cf; color: #51370d; }
-    .dark { background: #25221c; color: #fffaf1; }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
+    .toolbar {
+      position: sticky; top: 0; z-index: 15;
+      background: rgba(245,247,251,0.93);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 12px 0;
     }
+    .nav-pills { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+    .nav-pills a { text-decoration: none; white-space: nowrap; padding: 8px 12px; border-radius: 999px; color: var(--muted); background: var(--surface); border: 1px solid var(--line); font-weight: 800; font-size: 13px; }
 
-    .stat {
-      padding: 17px;
-      border-radius: 22px;
-      background: rgba(255,255,255,0.15);
-      border: 1px solid rgba(255,255,255,0.26);
-      backdrop-filter: blur(8px);
-    }
-
-    .stat b { display: block; font-size: 24px; }
-    .stat span { font-size: 12px; color: rgba(255,255,255,0.82); }
-
-    .section { margin-top: 28px; }
-
-    .section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 18px;
-      margin-bottom: 14px;
-    }
-
-    .section-title h2 {
-      font-size: clamp(24px, 3vw, 40px);
-      line-height: 1;
-      letter-spacing: -0.045em;
-      margin: 0;
-    }
-
-    .section-title p {
-      max-width: 760px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .panel {
-      background: rgba(255,250,241,0.9);
+    .grid { display: grid; gap: 16px; }
+    .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .window-card, .trip-card, .panel, .scenario-card, .rank-card {
+      background: var(--surface);
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
     }
-
-    .nav {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      margin: 16px 0;
-      padding: 12px;
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      backdrop-filter: blur(14px);
+    .window-card { display: grid; grid-template-rows: auto 1fr; }
+    .card-top {
+      padding: 18px;
+      background: linear-gradient(135deg, rgba(36,87,197,0.10), rgba(15,143,131,0.09));
+      border-bottom: 1px solid var(--line);
     }
-
-    .nav a {
-      text-decoration: none;
-      color: var(--ink);
-      font-weight: 850;
-      padding: 9px 12px;
+    .card-body { padding: 18px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
       border-radius: 999px;
-      background: var(--paper-2);
+      padding: 5px 9px;
+      background: var(--surface-2);
+      color: #314057;
       border: 1px solid var(--line);
-      font-size: 13px;
-      white-space: nowrap;
-    }
-
-    input, select, textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: var(--paper-2);
-      color: var(--ink);
-      border-radius: 16px;
-      padding: 12px 13px;
-      font: inherit;
-      outline: none;
-    }
-
-    textarea { min-height: 110px; resize: vertical; }
-
-    .label {
       font-size: 12px;
-      font-weight: 850;
-      color: var(--muted);
-      margin-bottom: 5px;
-      display: block;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+      font-weight: 800;
     }
+    .badge.excellent { background: #e8f8f0; border-color: #bdebd2; color: var(--success); }
+    .badge.good { background: #eef5ff; border-color: #cfe0ff; color: var(--primary-2); }
+    .badge.medium { background: #fff7e8; border-color: #f2d59f; color: var(--warning); }
+    .badge.bad { background: #fdeceb; border-color: #fac5c0; color: var(--danger); }
+    .muted { color: var(--muted); }
+    .small-text { font-size: 13px; }
+    .card-title { margin: 0; font-size: 20px; letter-spacing: -.25px; }
+    .card-sub { color: var(--muted); margin: 5px 0 0; }
 
-    .controls {
-      padding: 14px;
+    .filters {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 16px;
       display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr 1fr 1fr auto;
+      grid-template-columns: 1.4fr repeat(5, 1fr) auto;
       gap: 10px;
       align-items: end;
     }
+    .field label { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); font-weight: 900; margin-bottom: 5px; }
+    .field input, .field select, .field textarea {
+      width: 100%; border: 1px solid var(--line); border-radius: 12px; padding: 10px 11px; background: white; color: var(--text); outline: none;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(36,87,197,0.13); }
 
-    .budget-layout {
+    .trip-card { position: relative; }
+    .trip-visual {
+      height: 108px;
+      background: linear-gradient(135deg, #173977, #0f8f83);
+      position: relative;
+    }
+    .trip-visual::after {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(255,255,255,.34), transparent 19%),
+        linear-gradient(to top, rgba(20,32,51,.45), transparent);
+    }
+    .trip-visual.mediterraneo { background: linear-gradient(135deg, #0c72a8, #f0a05a); }
+    .trip-visual.alpes { background: linear-gradient(135deg, #12664f, #8cc084); }
+    .trip-visual.cultura { background: linear-gradient(135deg, #6649a8, #c07a42); }
+    .trip-visual.neve { background: linear-gradient(135deg, #4d6d8f, #dcecff); }
+    .trip-visual.final { background: linear-gradient(135deg, #1d1f45, #8b5cf6); }
+    .trip-card.selected { outline: 3px solid rgba(15,143,131,0.35); }
+    .price-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; margin: 12px 0; }
+    .score-box {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 12px 0;
+    }
+    .score-box div { background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 8px; }
+    .score-box span { display: block; color: var(--muted); font-size: 11px; font-weight: 900; text-transform: uppercase; }
+    .score-box strong { display: block; margin-top: 2px; }
+
+    .sim-layout { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 16px; align-items: start; }
+    .panel { padding: 18px; }
+    .budget-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .budget-total { margin-top: 14px; padding: 16px; border-radius: var(--radius-sm); background: #f4f8ff; border: 1px solid #d7e4ff; }
+    .progress { height: 16px; background: var(--surface-2); border-radius: 999px; overflow: hidden; border: 1px solid var(--line); margin: 12px 0; }
+    .progress > div { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), var(--primary)); transition: width .3s ease; }
+    .selected-list { display: grid; gap: 10px; }
+    .selected-item { border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px; background: #fbfcfe; display: grid; gap: 8px; }
+    .selected-item-top { display: flex; justify-content: space-between; gap: 8px; align-items: start; }
+    .alert { padding: 11px 12px; border-radius: 12px; background: #fff7e8; border: 1px solid #f2d59f; color: #6f4a10; font-size: 13px; margin-top: 8px; }
+    .alert.danger { background: #fdeceb; border-color: #fac5c0; color: var(--danger); }
+    .alert.success { background: #e8f8f0; border-color: #bdebd2; color: var(--success); }
+
+    .scenario-card { padding: 17px; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
+    .scenario-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .rank-card { padding: 18px; }
+    .rank-card h3 { margin: 0 0 10px; }
+    .rank-list { display: grid; gap: 10px; }
+    .rank-item { padding: 10px 12px; background: #fbfcfe; border: 1px solid var(--line); border-radius: 13px; }
+
+    .notes textarea { min-height: 190px; resize: vertical; }
+    .export-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+
+    .modal-backdrop {
+      display: none;
+      position: fixed; inset: 0; z-index: 50;
+      background: rgba(9, 18, 36, .62);
+      padding: 18px;
+      overflow-y: auto;
+    }
+    .modal {
+      max-width: 880px; margin: 40px auto; background: white; border-radius: 26px; box-shadow: var(--shadow); overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .modal-head { padding: 22px; background: linear-gradient(135deg, #0c1b3b, #2457c5); color: white; display: flex; justify-content: space-between; gap: 14px; align-items: start; }
+    .modal-body { padding: 22px; display: grid; gap: 14px; }
+    .modal-body .detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
+    .detail-box { background: #fbfcfe; border: 1px solid var(--line); border-radius: 14px; padding: 13px; }
+    .close-btn { background: rgba(255,255,255,0.12); color: white; border: 1px solid rgba(255,255,255,.25); border-radius: 999px; padding: 8px 12px; cursor: pointer; font-weight: 900; }
+
+    .footer { padding: 28px 0 48px; color: var(--muted); }
+    .empty { padding: 18px; border: 1px dashed var(--line); border-radius: var(--radius-sm); color: var(--muted); background: rgba(255,255,255,.6); }
+
+    @media (max-width: 960px) {
+      .hero-grid, .sim-layout { grid-template-columns: 1fr; }
+      .summary-grid, .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+      .filters { grid-template-columns: 1fr 1fr; }
+      .budget-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .hero { border-bottom-left-radius: 22px; border-bottom-right-radius: 22px; }
+      .filters { grid-template-columns: 1fr; }
+      .price-row, .score-box, .modal-body .detail-grid { grid-template-columns: 1fr; }
+      .section-title { display: block; }
+      .hero-actions .btn { width: 100%; }
+      .summary-grid { grid-template-columns: 1fr; }
+    }
+
+
+
+    /* --- UX upgrade: decision cockpit, price clarity and decision cards --- */
+    .decision-cockpit {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       gap: 16px;
+      align-items: stretch;
     }
-
-    .box { padding: 18px; }
-
-    .budget-grid {
+    .cockpit-panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-soft);
+      padding: 18px;
+    }
+    .cockpit-panel h3 { margin: 0 0 10px; font-size: 20px; letter-spacing: -.25px; }
+    .cockpit-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 10px;
       margin-top: 12px;
     }
-
-    .mini {
-      background: var(--paper-2);
+    .decision-tile {
+      background: #fbfcfe;
       border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 14px;
-    }
-
-    .mini span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-    .mini b { font-size: 24px; letter-spacing: -0.045em; }
-
-    .bar-wrap {
-      margin-top: 16px;
-      height: 18px;
-      background: #eadfc9;
-      border: 1px solid #d8c9ad;
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .bar {
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, var(--green), var(--gold), var(--red));
-      transition: width 0.2s ease;
-    }
-
-    .verdict {
-      margin-top: 14px;
-      padding: 14px;
-      border-radius: 18px;
-      background: #efe4cf;
-      color: #4c360e;
-      font-weight: 800;
-    }
-
-    .scenario-grid, .compare {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .scenario, .compare-card {
-      padding: 18px;
-      border-radius: 22px;
-      border: 1px solid var(--line);
-      background: var(--paper-2);
-    }
-
-    .scenario { cursor: pointer; }
-    .scenario:hover { outline: 2px solid rgba(184,137,56,0.25); }
-    .scenario h3, .compare-card h3 { margin: 0 0 8px; }
-    .scenario p, .compare-card p { margin: 0; color: var(--muted); font-size: 14px; }
-    .scenario .num, .big { font-size: 34px; font-weight: 950; letter-spacing: -0.06em; margin: 8px 0; }
-
-    .window-list { display: grid; gap: 12px; }
-
-    .window {
-      display: grid;
-      grid-template-columns: 210px 1fr auto;
-      gap: 14px;
-      align-items: center;
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      background: var(--paper-2);
-    }
-
-    .date { font-weight: 950; color: #6b470e; }
-    .window h3 { margin: 0 0 4px; font-size: 18px; }
-    .window p { margin: 0; color: var(--muted); font-size: 13px; }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      padding: 6px 9px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 850;
-      border: 1px solid var(--line);
-      background: var(--paper);
-    }
-
-    .pill.good { background: rgba(88,120,88,0.14); color: #31532f; }
-    .pill.med { background: rgba(85,116,142,0.14); color: #31546b; }
-    .pill.bad { background: rgba(157,91,78,0.14); color: #74382f; }
-    .pill.gold { background: rgba(184,137,56,0.16); color: #6d4b0d; }
-    .pill.snow { background: rgba(85,116,142,0.18); color: #31546b; }
-    .pill.culture { background: rgba(184,137,56,0.14); color: #6d4b0d; }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-    }
-
-    .card {
-      overflow: hidden;
-      border-radius: var(--radius);
-      background: var(--paper);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      display: flex;
-      flex-direction: column;
-      min-height: 430px;
-    }
-
-    .card-img {
-      height: 150px;
-      background: #ddd center/cover;
-      position: relative;
-    }
-
-    .card-img::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.45));
-    }
-
-    .tagrow {
-      position: absolute;
-      z-index: 2;
-      left: 12px;
-      right: 12px;
-      bottom: 10px;
-      display: flex;
-      gap: 7px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      display: inline-flex;
-      padding: 6px 9px;
-      border-radius: 999px;
-      background: rgba(0,0,0,0.42);
-      border: 1px solid rgba(255,255,255,0.24);
-      color: white;
-      font-size: 12px;
-      font-weight: 850;
-      backdrop-filter: blur(7px);
-    }
-
-    .body {
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 11px;
-      flex: 1;
-    }
-
-    .body h3 {
-      margin: 0;
-      font-size: 21px;
-      line-height: 1.06;
-      letter-spacing: -0.03em;
-    }
-
-    .meta { display: grid; gap: 5px; color: var(--muted); font-size: 13px; }
-
-    .why {
-      padding: 12px;
       border-radius: 16px;
-      background: var(--paper-2);
-      border: 1px solid var(--line);
-      font-size: 13px;
-    }
-
-    .price {
-      margin-top: auto;
-      padding-top: 11px;
-      border-top: 1px solid var(--line);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .price strong { font-size: 22px; }
-
-    .score {
-      display: inline-flex;
-      min-width: 48px;
-      height: 34px;
-      border-radius: 999px;
-      align-items: center;
-      justify-content: center;
-      background: #ede0c7;
-      color: #5b3d08;
-      font-weight: 950;
-    }
-
-    .card-actions {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .selected { background: #25221c !important; color: #fffaf1 !important; }
-    .small { font-size: 12px; color: var(--muted); }
-
-    .rank { display: grid; gap: 10px; }
-
-    .rank-item {
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 12px;
-      align-items: center;
       padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--paper-2);
     }
-
-    .rank-num {
-      width: 30px;
-      height: 30px;
-      border-radius: 999px;
-      background: #25221c;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 950;
+    .decision-tile span { display:block; color: var(--muted); font-size: 11px; font-weight:900; text-transform:uppercase; letter-spacing:.05em; }
+    .decision-tile strong { display:block; margin-top:4px; font-size: 23px; letter-spacing:-.5px; }
+    .quick-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
+    .quick-chip {
+      border:1px solid var(--line); background:var(--surface-2); color:var(--text);
+      border-radius:999px; padding:8px 10px; font-size:13px; font-weight:900; cursor:pointer;
     }
-
-    .rank-item h4 { margin: 0; }
-    .rank-item p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(20,18,15,0.55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 18px;
-      z-index: 50;
+    .quick-chip:hover { border-color: var(--primary); color: var(--primary-2); }
+    .recommendation-box {
+      display:grid; gap:10px; margin-top:10px;
     }
-
-    .modal.open { display: flex; }
-
-    .modal-card {
-      max-width: 820px;
-      width: 100%;
-      max-height: 88vh;
-      overflow: auto;
-      background: var(--paper);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      box-shadow: 0 28px 80px rgba(0,0,0,0.34);
+    .recommendation-item {
+      display:grid; grid-template-columns: auto 1fr auto; gap:10px; align-items:center;
+      background:#fbfcfe; border:1px solid var(--line); border-radius:16px; padding:10px;
     }
-
-    .modal-head {
-      padding: 20px;
-      border-bottom: 1px solid var(--line);
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: start;
+    .recommendation-item .rank-dot { width:30px; height:30px; border-radius:999px; display:grid; place-items:center; background:var(--primary); color:white; font-weight:900; }
+    .recommendation-item h4 { margin:0; font-size:15px; }
+    .recommendation-item p { margin:2px 0 0; color:var(--muted); font-size:12px; }
+    .recommendation-item .price-mini { font-weight:900; color:var(--primary-2); white-space:nowrap; }
+    .trip-card.decision-best { outline: 3px solid rgba(22,121,76,.18); }
+    .decision-strip {
+      display:flex; flex-wrap:wrap; gap:8px; margin: 10px 0;
     }
-
-    .modal-head h2 { margin: 0; font-size: 28px; letter-spacing: -0.04em; }
-    .modal-body { padding: 20px; display: grid; gap: 14px; }
-    .modal-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-
-    .detail {
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: var(--paper-2);
+    .decision-pill {
+      display:inline-flex; align-items:center; gap:6px; border-radius:999px; padding:6px 9px;
+      font-size:12px; font-weight:900; border:1px solid var(--line); background:var(--surface-2);
     }
-
-    .detail b { display: block; margin-bottom: 5px; }
-    .close { background: #efe4cf; color: #3d2b0b; }
-    .notes { padding: 18px; }
-    .footer { margin-top: 28px; text-align: center; font-size: 13px; color: var(--muted); }
-
-    @media (max-width: 1000px) {
-      .stats, .cards, .compare, .scenario-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .controls { grid-template-columns: 1fr 1fr; }
-      .budget-layout { grid-template-columns: 1fr; }
-      .window { grid-template-columns: 1fr; }
-      .budget-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .decision-pill.go { color:var(--success); background:#e8f8f0; border-color:#bdebd2; }
+    .decision-pill.wait { color:var(--warning); background:#fff7e8; border-color:#f2d59f; }
+    .decision-pill.stop { color:var(--danger); background:#fdeceb; border-color:#fac5c0; }
+    .decision-pill.dream { color:#5b3d91; background:#f1ecff; border-color:#d7ccff; }
+    .price-hero {
+      display:grid; grid-template-columns: 1fr auto; gap:10px; align-items:center;
+      border:1px solid var(--line); border-radius:16px; background:#f7faff; padding:12px; margin:12px 0;
     }
-
-    @media (max-width: 640px) {
-      .app { padding: 14px 10px 60px; }
-      .hero { padding: 24px; min-height: 460px; }
-      .stats, .cards, .compare, .scenario-grid, .budget-grid, .modal-grid { grid-template-columns: 1fr; }
-      .controls { grid-template-columns: 1fr; }
-      .card-actions { grid-template-columns: 1fr; }
-      .section-title { display: block; }
-      .section-title p { margin-top: 8px; }
+    .price-hero strong { font-size:28px; letter-spacing:-.7px; display:block; color:var(--primary-2); }
+    .price-hero span { color:var(--muted); font-size:12px; font-weight:800; }
+    .price-hero .price-kind { text-align:right; }
+    .value-meter { height:8px; border-radius:999px; background:var(--surface-2); overflow:hidden; border:1px solid var(--line); margin-top:8px; }
+    .value-meter > div { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent),var(--primary)); width:0%; }
+    .card-decision-summary {
+      display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin:10px 0;
+    }
+    .mini-kpi { background:var(--surface-2); border:1px solid var(--line); border-radius:12px; padding:8px; }
+    .mini-kpi span { display:block; color:var(--muted); font-size:10px; font-weight:900; text-transform:uppercase; letter-spacing:.05em; }
+    .mini-kpi strong { display:block; margin-top:2px; font-size:14px; }
+    .selected-total-footer {
+      margin-top:10px; padding:12px; border-radius:14px; background:#f4f8ff; border:1px solid #d7e4ff;
+      display:grid; gap:5px;
+    }
+    .selected-total-footer strong { font-size:20px; }
+    @media (max-width: 960px) {
+      .decision-cockpit { grid-template-columns: 1fr; }
+      .cockpit-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    @media (max-width: 600px) {
+      .cockpit-grid, .card-decision-summary { grid-template-columns:1fr; }
+      .price-hero { grid-template-columns:1fr; }
+      .price-hero .price-kind { text-align:left; }
+      .recommendation-item { grid-template-columns:auto 1fr; }
+      .recommendation-item .price-mini { grid-column:2; }
     }
 
     @media print {
-      .nav, .controls, .hero-actions, .notes, .footer, .card-actions, button { display: none !important; }
-      .panel, .card { box-shadow: none; }
-      .hero { min-height: 220px; }
-      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .toolbar, .hero-actions, .filters, .btn, .export-actions, .modal-backdrop { display: none !important; }
+      body { background: white; }
+      .hero { color: #111; background: white; box-shadow: none; border-bottom: 1px solid #ddd; }
+      .summary-card { color: #111; background: white; border: 1px solid #ddd; }
+      .summary-card span { color: #555; }
+      .window-card, .trip-card, .panel, .scenario-card, .rank-card { break-inside: avoid; box-shadow: none; }
     }
   </style>
 </head>
 <body>
-  <main class="app">
-    <section class="hero">
+  <header class="hero" id="topo">
+    <div class="wrap hero-grid">
       <div>
-        <span class="eyebrow">🌍 Planejador visual • Feriados + orçamento + destinos</span>
-        <h1>Mapa de decisões para suas viagens na Europa.</h1>
-        <p>Escolha uma janela de feriado, compare os destinos que realmente combinam com aquela época, selecione opções e simule quanto isso consome do seu dinheiro livre até outubro de 2027.</p>
+        <div class="eyebrow">Europa 2026–2027 · dashboard offline</div>
+        <h1>Planejador visual de viagens Europa 2026–2027</h1>
+        <p class="subtitle">Feriados, congés, teletrabalho, destinos prioritários e orçamento livre em um só lugar.</p>
         <div class="hero-actions">
-          <button class="primary" data-go="opcoes">Ver opções por feriado</button>
-          <button class="ghost" data-go="simulador">Simular orçamento</button>
-          <button class="ghost" data-go="cenarios">Comparar cenários</button>
-          <button class="ghost" id="printBtn">Salvar em PDF</button>
+          <button class="btn" onclick="scrollToId('janelas')">Ver janelas</button>
+          <button class="btn secondary" onclick="scrollToId('destinos')">Ver destinos</button>
+          <button class="btn secondary" onclick="scrollToId('simulador')">Simular orçamento</button>
+          <button class="btn secondary" onclick="scrollToId('cenarios')">Ver cenários</button>
+          <button class="btn secondary" onclick="window.print()">Imprimir/Salvar PDF</button>
         </div>
       </div>
-      <div class="stats">
-        <div class="stat"><b>€5.692</b><span>livre acumulado estimado</span></div>
-        <div class="stat"><b>€4.900</b><span>orçamento de viagem recomendado</span></div>
-        <div class="stat"><b>10</b><span>congés máximos no estágio atual</span></div>
-        <div class="stat"><b>4</b><span>tipos de viagem por estação</span></div>
+      <div class="summary-grid">
+        <div class="summary-card"><span>Orçamento livre total</span><strong id="heroTotal">€5.692</strong></div>
+        <div class="summary-card"><span>Reserva recomendada</span><strong id="heroReserve">€700</strong></div>
+        <div class="summary-card"><span>Orçamento viagens</span><strong id="heroTravel">€4.900</strong></div>
+        <div class="summary-card"><span>Período</span><strong>maio/2026 a outubro/2027</strong></div>
       </div>
-    </section>
+    </div>
+  </header>
 
-    <nav class="nav panel">
+  <nav class="toolbar">
+    <div class="wrap nav-pills">
+      <a href="#cockpit">Decisão</a>
       <a href="#janelas">Janelas</a>
-      <a href="#opcoes">Opções</a>
+      <a href="#filtros">Filtros</a>
+      <a href="#destinos">Destinos</a>
       <a href="#simulador">Simulador</a>
       <a href="#cenarios">Cenários</a>
-      <a href="#comparacao">Nice vs GP</a>
-      <a href="#ranking">Prioridades</a>
+      <a href="#ranking">Ranking</a>
       <a href="#notas">Notas</a>
-    </nav>
+      <a href="#exportacao">Exportação</a>
+    </div>
+  </nav>
 
-    <section class="section" id="janelas">
-      <div class="section-title">
-        <h2>Janelas de feriado e viagem</h2>
-        <p>Clique em uma janela para filtrar automaticamente as opções compatíveis. As janelas ruins aparecem para você não esquecer, mas não são prioridade.</p>
-      </div>
-      <div class="panel box window-list" id="windowList"></div>
-    </section>
-
-    <section class="section" id="opcoes">
-      <div class="section-title">
-        <h2>Opções por feriado</h2>
-        <p>Os cartões mostram apenas destinos que fazem sentido para aquela janela: época certa, clima, estética, logística e custo provável.</p>
-      </div>
-      <div class="panel controls">
-        <div><span class="label">Busca</span><input id="search" placeholder="Buscar destino, país, janela..."></div>
-        <div><span class="label">Janela</span><select id="windowFilter"><option value="all">Todas</option></select></div>
-        <div><span class="label">Tipo</span><select id="typeFilter"><option value="all">Todos</option><option value="mediterraneo">Mediterrâneo</option><option value="verde">Alpes verdes</option><option value="cultura">Cidade/cultura</option><option value="neve">Neve/ski</option><option value="caro">Final/luxo</option></select></div>
-        <div><span class="label">Prioridade</span><select id="priorityFilter"><option value="all">Todas</option><option value="alta">Alta</option><option value="media">Média</option><option value="baixa">Baixa</option></select></div>
-        <div><span class="label">Teto</span><select id="budgetFilter"><option value="all">Qualquer</option><option value="500">Até €500</option><option value="900">Até €900</option><option value="1300">Até €1300</option><option value="2000">Até €2000</option></select></div>
-        <button id="clearFiltersBtn">Limpar</button>
-      </div>
-      <div class="cards" id="cards"></div>
-    </section>
-
-    <section class="section" id="simulador">
-      <div class="section-title">
-        <h2>Simulador de orçamento</h2>
-        <p>Selecione viagens nos cartões. O custo médio entra aqui automaticamente. Você também pode editar valores reais que encontrar.</p>
-      </div>
-      <div class="budget-layout">
-        <div class="panel box">
-          <div class="budget-grid">
-            <div><span class="label">Livre total</span><input id="totalBudget" type="number" value="5692"></div>
-            <div><span class="label">Reserva segurança</span><input id="reserve" type="number" value="700"></div>
-            <div><span class="label">Custo selecionado</span><input id="spent" type="number" value="0"></div>
-            <div><span class="label">Extra previsto</span><input id="extra" type="number" value="0"></div>
-          </div>
-          <div class="budget-grid">
-            <div class="mini"><span>Disponível p/ viagens</span><b id="available">€0</b></div>
-            <div class="mini"><span>Total planejado</span><b id="planned">€0</b></div>
-            <div class="mini"><span>Sobra após plano</span><b id="remaining">€0</b></div>
-            <div class="mini"><span>Status</span><b id="status">OK</b></div>
-          </div>
-          <div class="bar-wrap"><div class="bar" id="budgetBar"></div></div>
-          <div class="verdict" id="verdict"></div>
+  <main>
+    <section id="contexto">
+      <div class="wrap">
+        <div class="notice">
+          <strong>Dados preservados:</strong> os destinos, datas, janelas e observações vêm do texto informado pelo usuário. Onde não há preço exato, o campo de preço fica editável. A página funciona offline; por isso, a “previsão do tempo” é um campo manual/editável por viagem, não uma consulta automática em tempo real.
         </div>
-        <div class="panel box">
-          <h3 style="margin-top:0">Viagens selecionadas</h3>
-          <div id="selectedList" class="rank"></div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
-            <button class="danger" id="clearSelectedBtn">Limpar selecionadas</button>
-            <button class="soft" id="copyPlanBtn">Copiar plano</button>
+      </div>
+    </section>
+
+
+    <section id="cockpit">
+      <div class="wrap">
+        <div class="section-title">
+          <div>
+            <h2>Painel de decisão rápida</h2>
+            <p>Veja o impacto financeiro do plano, as melhores opções visíveis e filtros prontos para decidir com menos esforço.</p>
+          </div>
+        </div>
+        <div class="decision-cockpit">
+          <div class="cockpit-panel">
+            <h3>Resumo financeiro</h3>
+            <div class="cockpit-grid">
+              <div class="decision-tile"><span>Selecionadas</span><strong id="cockpitSelected">0</strong></div>
+              <div class="decision-tile"><span>Custo planejado</span><strong id="cockpitPlanned">€0</strong></div>
+              <div class="decision-tile"><span>Saldo restante</span><strong id="cockpitRemaining">€0</strong></div>
+              <div class="decision-tile"><span>Status</span><strong id="cockpitStatus">OK</strong></div>
+            </div>
+            <div class="quick-actions">
+              <button class="quick-chip" onclick="quickFilter('cheap')">Até €500</button>
+              <button class="quick-chip" onclick="quickFilter('best')">Melhor custo-benefício</button>
+              <button class="quick-chip" onclick="quickFilter('excellent')">Janelas excelentes</button>
+              <button class="quick-chip" onclick="quickFilter('max')">Prioridade máxima</button>
+              <button class="quick-chip" onclick="quickFilter('missing')">Preços a preencher</button>
+            </div>
+          </div>
+          <div class="cockpit-panel">
+            <h3>Melhores opções exibidas agora</h3>
+            <div id="topRecommendations" class="recommendation-box"></div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="cenarios">
-      <div class="section-title"><h2>Cenários prontos</h2><p>Use cenários para testar rapidamente se seu plano cabe. Depois personalize adicionando ou removendo cartões.</p></div>
-      <div class="scenario-grid" id="scenarios"></div>
-    </section>
-
-    <section class="section" id="comparacao">
-      <div class="section-title"><h2>Decisão de maio: Nice agora, GP de Mônaco ou Marseille?</h2><p>Comparação crítica para evitar gastar por impulso.</p></div>
-      <div class="compare">
-        <div class="compare-card"><h3>Nice + Èze + Mônaco agora</h3><div class="big">€350–370</div><p>Inclui tudo. Quinta em teletrabalho, aproveita quinta pós-trabalho, sexta e sábado. Muito bom para maio.</p><div class="verdict">Aprovado. Teto ideal: €420.</div></div>
-        <div class="compare-card"><h3>GP de Mônaco</h3><div class="big">~€717</div><p>Experiência especial, mas quase o dobro. Sexta é dia de treino. Só vale se F1 for sonho pessoal real.</p><div class="verdict">Luxo/extra. Pode custar 2 viagens boas.</div></div>
-        <div class="compare-card"><h3>Marseille + Cassis</h3><div class="big">€250–500</div><p>Calanques, mar, trilha leve e custo controlado. Ótima segunda viagem se Nice já for feita.</p><div class="verdict">Excelente custo-benefício.</div></div>
+    <section id="janelas">
+      <div class="wrap">
+        <div class="section-title">
+          <div>
+            <h2>Janelas de feriado e viagem</h2>
+            <p>Use os cards para entender duração, congés, teletrabalho, tipo ideal e qualidade da janela. Clicar em uma janela filtra automaticamente os destinos compatíveis.</p>
+          </div>
+        </div>
+        <div id="windowsGrid" class="grid cols-3"></div>
       </div>
     </section>
 
-    <section class="section" id="ranking">
-      <div class="section-title"><h2>Ranking estratégico</h2><p>O que proteger no orçamento e o que só fazer se aparecer promoção.</p></div>
-      <div class="budget-layout">
-        <div class="panel box"><h3>Prioridade máxima</h3><div class="rank" id="rankHigh"></div></div>
-        <div class="panel box"><h3>Somente se preço estiver bom</h3><div class="rank" id="rankCaution"></div></div>
+    <section id="filtros">
+      <div class="wrap">
+        <div class="section-title">
+          <div>
+            <h2>Filtros inteligentes</h2>
+            <p>Compare por janela, tipo, país, prioridade, orçamento máximo e qualidade da janela.</p>
+          </div>
+        </div>
+        <div class="filters">
+          <div class="field"><label>Busca textual</label><input id="searchInput" type="search" placeholder="Ex: Suíça, maio, ski, Malta..." /></div>
+          <div class="field"><label>Janela</label><select id="windowFilter"><option value="">Todas</option></select></div>
+          <div class="field"><label>Tipo</label><select id="typeFilter"><option value="">Todos</option></select></div>
+          <div class="field"><label>País</label><select id="countryFilter"><option value="">Todos</option></select></div>
+          <div class="field"><label>Prioridade</label><select id="priorityFilter"><option value="">Todas</option></select></div>
+          <div class="field"><label>Orçamento máximo</label><input id="budgetFilter" type="number" min="0" placeholder="€" /></div>
+          <div class="field"><label>Qualidade</label><select id="qualityFilter"><option value="">Todas</option><option>Excelente</option><option>Boa</option><option>Média</option><option>Ruim</option></select></div>
+          <button class="btn ghost" onclick="clearFilters()">Limpar filtros</button>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="notas">
-      <div class="section-title"><h2>Notas pessoais editáveis</h2><p>Coloque preços reais, links, horários e dúvidas. Fica salvo no navegador.</p></div>
-      <div class="panel notes"><textarea id="notes" placeholder="Exemplo: Nice 7–10 maio: total €370. Volta domingo custa +€18. Hostel €X. Trem local €Y..."></textarea></div>
+    <section id="destinos">
+      <div class="wrap">
+        <div class="section-title">
+          <div>
+            <h2>Destinos e opções por janela</h2>
+            <p><span id="tripCount">0</span> opções exibidas. Os cards usam notas estratégicas para ajudar a decidir, não apenas listar destinos.</p>
+          </div>
+        </div>
+        <div id="tripsGrid" class="grid cols-3"></div>
+      </div>
     </section>
 
-    <div class="footer">Estimativas econômico-realistas. Antes de comprar, atualizar com preços reais e verificar horários, hospedagem e regras do teletrabalho.</div>
+    <section id="simulador">
+      <div class="wrap">
+        <div class="section-title">
+          <div>
+            <h2>Simulador de orçamento</h2>
+            <p>Selecione viagens, edite preços reais encontrados, adicione custos extras e veja o impacto no orçamento recomendado.</p>
+          </div>
+        </div>
+        <div class="sim-layout">
+          <div class="panel">
+            <h3>Parâmetros financeiros</h3>
+            <div class="budget-grid">
+              <div class="field"><label>Orçamento livre total</label><input id="freeBudget" type="number" value="5692" min="0" /></div>
+              <div class="field"><label>Reserva de segurança</label><input id="safetyReserve" type="number" value="700" min="0" /></div>
+              <div class="field"><label>Custo extra manual</label><input id="manualExtra" type="number" value="0" min="0" /></div>
+            </div>
+            <div class="budget-total">
+              <div class="meta">
+                <span class="badge">Disponível: <strong id="availableBudget">€4.992</strong></span>
+                <span class="badge">Planejado: <strong id="plannedTotal">€0</strong></span>
+                <span class="badge">Saldo: <strong id="remainingBudget">€4.992</strong></span>
+              </div>
+              <div class="progress"><div id="budgetProgress"></div></div>
+              <div id="budgetVerdict" class="alert success">Plano saudável.</div>
+              <div id="budgetWarnings"></div>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Viagens selecionadas</h3>
+            <div id="selectedList" class="selected-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cenarios">
+      <div class="wrap">
+        <div class="section-title">
+          <div>
+            <h2>Cenários automáticos</h2>
+            <p>Clique em um cenário para selecionar automaticamente viagens relacionadas e atualizar o simulador.</p>
+          </div>
+        </div>
+        <div id="scenariosGrid" class="grid cols-3"></div>
+      </div>
+    </section>
+
+    <section id="comparativo">
+      <div class="wrap">
+        <div class="section-title">
+          <div>
+            <h2>Comparação estratégica</h2>
+            <p>Três leituras rápidas para equilibrar experiência, dinheiro e risco.</p>
+          </div>
+        </div>
+        <div class="grid cols-3">
+          <div class="rank-card"><h3>Conservador</h3><p>Prioriza viagens curtas, França, custo controlado, Colmar, Marseille/Cassis, Grenoble ski e destinos com logística simples.</p><div class="alert success">Bom para proteger o orçamento e evitar arrependimento financeiro.</div></div>
+          <div class="rank-card"><h3>Equilibrado</h3><p>Mistura 1 viagem memorável com várias médias: Suíça/Dolomites ou Croácia/Grécia em época certa, mais viagens curtas.</p><div class="alert">Melhor relação entre sonho, estética e segurança financeira.</div></div>
+          <div class="rank-card"><h3>Agressivo</h3><p>Inclui Lapônia, Islândia, GP de Mônaco ou destinos caros em alta temporada. Pode consumir o valor de 2–3 viagens médias.</p><div class="alert danger">Só faz sentido se for prioridade emocional muito clara.</div></div>
+        </div>
+        <div class="notice"><strong>Como conselheiro financeiro,</strong> a recomendação automática é priorizar 1 grande viagem memorável em época certa, 2 a 4 viagens médias e várias opções curtas/controladas. Evite concentrar muito dinheiro antes de setembro de 2026 para não comprometer as melhores janelas futuras.</div>
+      </div>
+    </section>
+
+    <section id="ranking">
+      <div class="wrap">
+        <div class="section-title">
+          <div>
+            <h2>Ranking estratégico</h2>
+            <p>Baseado na ordem final de prioridade fornecida pelo usuário.</p>
+          </div>
+        </div>
+        <div class="grid cols-2">
+          <div class="rank-card">
+            <h3>Prioridade máxima</h3>
+            <div class="rank-list" id="rankMax"></div>
+          </div>
+          <div class="rank-card">
+            <h3>Somente se preço estiver bom</h3>
+            <div class="rank-list" id="rankPrice"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="notas">
+      <div class="wrap notes">
+        <div class="section-title">
+          <div>
+            <h2>Notas pessoais</h2>
+            <p>Área persistente com localStorage para preços reais, links, horários, dúvidas e comparações.</p>
+          </div>
+        </div>
+        <div class="panel field">
+          <label>Notas editáveis</label>
+          <textarea id="personalNotes" placeholder="Cole aqui preços reais, links, horários, dúvidas e comparações."></textarea>
+        </div>
+      </div>
+    </section>
+
+    <section id="exportacao">
+      <div class="wrap">
+        <div class="section-title">
+          <div>
+            <h2>Exportação do plano</h2>
+            <p>Copie, limpe, imprima ou exporte um JSON simples com seu plano selecionado.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="export-actions">
+            <button class="btn success" onclick="copyPlan()">Copiar plano selecionado</button>
+            <button class="btn danger" onclick="clearSelection()">Limpar plano</button>
+            <button class="btn" onclick="window.print()">Imprimir/Salvar PDF</button>
+            <button class="btn ghost" onclick="exportJSON()">Exportar JSON</button>
+          </div>
+          <div id="copyStatus" class="small-text muted" style="margin-top:12px;"></div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <div class="modal" id="modal">
-    <div class="modal-card">
+  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-head">
-        <div><h2 id="modalTitle"></h2><div class="small" id="modalSub"></div></div>
-        <button class="close" id="modalCloseBtn">Fechar</button>
+        <div>
+          <h2 id="modalTitle" style="margin:0;"></h2>
+          <p id="modalSubtitle" style="margin:6px 0 0;color:#d9e5ff;"></p>
+        </div>
+        <button class="close-btn" onclick="closeModal(event)">Fechar</button>
       </div>
       <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
 
+  <footer class="footer">
+    <div class="wrap">Arquivo HTML único · sem bibliotecas externas · dados locais salvos no navegador.</div>
+  </footer>
+
 <script>
-(function () {
-  'use strict';
+const DATA_NOTE = "Dado informado pelo usuário";
+const ESTIMATE_NOTE = "Estimativa / campo editável";
 
-  var images = {
-    riviera: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=85',
-    marseille: 'https://images.unsplash.com/photo-1589373079561-0b4c247c0199?auto=format&fit=crop&w=1200&q=85',
-    malta: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=1200&q=85',
-    mallorca: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85',
-    barcelona: 'https://images.unsplash.com/photo-1539037116277-4db20889f2d4?auto=format&fit=crop&w=1200&q=85',
-    colmar: 'https://images.unsplash.com/photo-1576502200916-3808e07386a5?auto=format&fit=crop&w=1200&q=85',
-    chamonix: 'https://images.unsplash.com/photo-1601581875309-fafbf2d3ed3a?auto=format&fit=crop&w=1200&q=85',
-    swiss: 'https://images.unsplash.com/photo-1527668752968-14dc70a27c95?auto=format&fit=crop&w=1200&q=85',
-    dolomites: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=85',
-    slovenia: 'https://images.unsplash.com/photo-1502786129293-79981df4e689?auto=format&fit=crop&w=1200&q=85',
-    austria: 'https://images.unsplash.com/photo-1504198453319-5ce911bafcde?auto=format&fit=crop&w=1200&q=85',
-    croatia: 'https://images.unsplash.com/photo-1555990538-c48dbe0b52cb?auto=format&fit=crop&w=1200&q=85',
-    greece: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?auto=format&fit=crop&w=1200&q=85',
-    italy: 'https://images.unsplash.com/photo-1523906834658-6e24ef2386f9?auto=format&fit=crop&w=1200&q=85',
-    snow: 'https://images.unsplash.com/photo-1483664852095-d6cc6870702d?auto=format&fit=crop&w=1200&q=85',
-    krakow: 'https://images.unsplash.com/photo-1519197924294-4ba991a11128?auto=format&fit=crop&w=1200&q=85'
-  };
+const windows = [
+  { id:"w-2026-05-08", date:"8 maio 2026", name:"sexta-feira", ideal:"quinta 7 maio a domingo 10 maio", duration:"4 dias possíveis", conges:1, telework:"Quarta é teletrabalho; dá para viajar quarta à noite ou quinta cedo", quality:"Excelente", typeIdeal:"Mediterrâneo", observation:"Pegar quinta como congé. Melhor para Riviera, sul da França, Malta, Espanha." },
+  { id:"w-2026-05-14", date:"14 maio 2026", name:"Ascension", ideal:"quarta 13 maio a domingo 17 maio", duration:"5 dias possíveis", conges:1, telework:"Quarta é teletrabalho; dá para sair terça à noite ou quarta cedo e trabalhar online", quality:"Excelente", typeIdeal:"Mediterrâneo", observation:"Pegar sexta 15 maio como congé. Ponte muito forte para Mediterrâneo." },
+  { id:"w-2026-05-25", date:"25 maio 2026", name:"Pentecôte", ideal:"sexta 22 maio à noite a segunda 25 maio", duration:"3 dias", conges:0, telework:"Sem teletrabalho necessário", quality:"Boa", typeIdeal:"Cultura / Mediterrâneo leve", observation:"Não gastar congé." },
+  { id:"w-2026-06", date:"Junho 2026", name:"sem feriado, usando 1 ou 2 congés", ideal:"sexta a segunda, ou quinta à noite a domingo", duration:"3 a 4 dias", conges:1, telework:"Quarta/quinta são teletrabalho; dá para sair mais cedo se a passagem estiver barata", quality:"Boa", typeIdeal:"Alpes verdes / Natureza", observation:"Começa a temporada verde; ideal para Chamonix, Suíça, Eslovênia, Áustria." },
+  { id:"w-2026-07-14", date:"14 julho 2026", name:"Fête Nationale", ideal:"sábado 11 julho a terça 14 julho", duration:"4 dias", conges:1, telework:"Janela avançada sábado 11 a quinta 16 julho, trabalhando online quarta/quinta", quality:"Excelente", typeIdeal:"Alpes verdes", observation:"Pegar segunda 13 julho como congé. Grande janela verde, mas com risco de preço alto." },
+  { id:"w-2026-08-15", date:"15 agosto 2026", name:"Assomption", ideal:"ruim isolado", duration:"Não cria folga útil", conges:0, telework:"Não indicado", quality:"Ruim", typeIdeal:"Não priorizar", observation:"Não usar como base de viagem, a menos que encaixe com congés de fim de estágio." },
+  { id:"w-2026-09-01", date:"1 a 7 setembro 2026", name:"depois do fim do estágio e antes da volta às aulas", ideal:"1 a 7 setembro 2026", duration:"até 7 dias", conges:0, telework:"Não depende de teletrabalho do estágio", quality:"Excelente", typeIdeal:"Viagem final / Mediterrâneo / Alpes verdes", observation:"Melhor janela para viagem maior, possivelmente com seu primo." },
+  { id:"w-2026-10-23", date:"23 outubro a 1 novembro 2026", name:"Toussaint 2026", ideal:"23 outubro a 1 novembro 2026", duration:"semana acadêmica", conges:0, telework:"Não informado", quality:"Boa", typeIdeal:"Cidade / Cultura / Sul da Europa", observation:"Viagem cultural/outono, não viagem principal de Alpes verdes." },
+  { id:"w-2026-12-17", date:"17 dezembro 2026 a 3 janeiro 2027", name:"Noël 2026 / Ano Novo 2027", ideal:"17 dezembro 2026 a 3 janeiro 2027", duration:"janela longa", conges:0, telework:"Não informado", quality:"Excelente", typeIdeal:"Neve / Natal / Ski", observation:"Entram neve, aurora, mercados de Natal e ski. Não entra Suíça verde." },
+  { id:"w-2027-01-25", date:"25 a 29 janeiro 2027", name:"Intersemestre 2027", ideal:"25 a 29 janeiro 2027", duration:"curta de inverno", conges:0, telework:"Não informado", quality:"Boa", typeIdeal:"Neve / Ski / Cidade barata", observation:"Ski, neve ou cidade barata." },
+  { id:"w-2027-03-27", date:"27 março a 31 março 2027", name:"Primavera 2027 / Lundi de Pâques", ideal:"27 março a 31 março 2027", duration:"5 dias; possível extensão até 3 abril ou talvez 14 abril", conges:0, telework:"Não informado", quality:"Excelente", typeIdeal:"Cidades mediterrâneas / Itália / Espanha", observation:"Excelente para Itália, Espanha, Malta e Atenas. Ainda cedo para Alpes verdes perfeitos." },
+  { id:"w-2027-05-06", date:"6 maio 2027", name:"Ascension", ideal:"quinta 6 a domingo 9 maio", duration:"4 dias", conges:1, telework:"Não informado", quality:"Excelente", typeIdeal:"Mediterrâneo / Riviera / Malta / Mallorca", observation:"Pegar sexta 7 maio como congé." },
+  { id:"w-2027-05-17", date:"17 maio 2027", name:"Pentecôte", ideal:"sexta à noite a segunda à noite", duration:"3 dias", conges:0, telework:"Não informado", quality:"Boa", typeIdeal:"Mediterrâneo curto / Cultura simples", observation:"0 congé." },
+  { id:"w-2027-06", date:"Junho 2027", name:"usando 2 congés", ideal:"janela artificial forte para 4 ou 5 dias", duration:"4 a 5 dias", conges:2, telework:"Não informado", quality:"Excelente", typeIdeal:"Alpes verdes / Natureza", observation:"Melhor mês para Alpes verdes e natureza." },
+  { id:"w-2027-07-14", date:"14 julho 2027", name:"Fête Nationale", ideal:"quarta 14 a domingo 18 julho", duration:"5 dias", conges:2, telework:"Não informado", quality:"Boa", typeIdeal:"Alpes verdes", observation:"Pegar quinta e sexta como congés. Verde forte, mas caro." },
+  { id:"w-2027-08", date:"Agosto 2027", name:"só com cuidado financeiro", ideal:"Agosto 2027", duration:"variável", conges:0, telework:"Não informado", quality:"Média", typeIdeal:"Alpes verdes com cuidado", observation:"15 agosto cai domingo, então não ajuda. Só vale com passagem boa ou planejamento cedo." },
+  { id:"w-2027-final", date:"Final do estágio 2027 / antes de voltar ao Brasil", name:"Janela grande final", ideal:"janela grande final", duration:"ideal 7 a 10 dias ou mais", conges:0, telework:"Não informado", quality:"Excelente", typeIdeal:"Viagem final", observation:"Usar como viagem memorável, não viagem média." }
+];
 
-  var windowsData = [
-    { id: 'w_8mai', date: '8 maio 2026', name: 'Victoire 1945', quality: 'good', duration: '7–10 maio', strategy: 'Pegar quinta como congé. Quarta é teletrabalho, então dá para sair mais cedo se for barato.', best: 'Riviera, Marseille/Cassis, Espanha, Malta' },
-    { id: 'w_asc26', date: '14 maio 2026', name: 'Ascension', quality: 'good', duration: '13–17 maio', strategy: 'Pegar sexta como congé. Quarta teletrabalho pode virar dia de deslocamento barato.', best: 'Malta, Riviera, Mallorca, Marseille/Cassis' },
-    { id: 'w_pent26', date: '25 maio 2026', name: 'Pentecôte', quality: 'med', duration: '22–25 maio', strategy: '0 congé. Viagem curta, sem exagerar no custo.', best: 'Colmar, Marseille/Cassis, Barcelona/Valencia' },
-    { id: 'w_jun26', date: 'Junho 2026', name: 'Janela artificial', quality: 'med', duration: '3–4 dias', strategy: 'Usar sexta ou segunda. Começa a temporada verde.', best: 'Chamonix, Suíça verde, Eslovênia, Áustria' },
-    { id: 'w_jul26', date: '14 julho 2026', name: 'Fête Nationale', quality: 'good', duration: '11–16 julho', strategy: 'Pegar segunda. Quarta/quinta teletrabalho podem alongar a viagem.', best: 'Dolomites, Suíça verde, Chamonix, Áustria, Eslovênia' },
-    { id: 'w_aug26', date: '15 agosto 2026', name: 'Assomption', quality: 'bad', duration: 'cai sábado', strategy: 'Ruim isolado. Só usar se encaixar com fim de estágio.', best: 'Não priorizar' },
-    { id: 'w_sep26', date: '1–7 setembro 2026', name: 'Pós-estágio', quality: 'good', duration: '6–7 dias', strategy: 'Janela premium antes das aulas. Proteger orçamento para ela.', best: 'Croácia, Grécia, Malta, Puglia/Amalfi, Dolomites, Suíça verde' },
-    { id: 'w_tous26', date: '23 out–1 nov 2026', name: 'Toussaint', quality: 'good', duration: 'até 9 dias', strategy: 'Cidade, cultura e sul da Europa. Evitar Alpes verdes como prioridade.', best: 'Roma/Vaticano/Veneza, Espanha, Malta, Atenas, Krakow' },
-    { id: 'w_11nov', date: '11 novembro 2026', name: 'Armistice', quality: 'med', duration: 'bate-volta', strategy: 'Janela curta. Não gastar muito.', best: 'Colmar, Strasbourg, Genebra, Stuttgart curto' },
-    { id: 'w_noel', date: '17 dez–3 jan 2027', name: 'Noël + Ano Novo', quality: 'good', duration: 'até 17 dias', strategy: 'Neve, aurora, Natal e ski. Não é janela para Suíça verde.', best: 'Lapônia, Islândia, Grenoble ski, Colmar/Strasbourg, Stuttgart, Innsbruck' },
-    { id: 'w_inter', date: '25–29 janeiro 2027', name: 'Intersemestre', quality: 'med', duration: '4–5 dias', strategy: 'Ski/neve ou cidade barata.', best: 'Grenoble ski, Krakow, Innsbruck, Lapônia/Islândia se luxo' },
-    { id: 'w_paq27', date: '27 mar–3 abr 2027', name: 'Pâques / primavera', quality: 'good', duration: '5–8 dias', strategy: 'Itália, Espanha, Malta e Atenas. Cedo para Alpes verdes perfeitos.', best: 'Roma/Vaticano/Veneza, Barcelona/Valencia, Malta, Atenas/Santorini' },
-    { id: 'w_asc27', date: '6 maio 2027', name: 'Ascension', quality: 'good', duration: '6–9 maio', strategy: 'Pegar sexta como congé.', best: 'Malta, Mallorca, Riviera, Marseille/Cassis, Barcelona/Valencia' },
-    { id: 'w_pent27', date: '17 maio 2027', name: 'Pentecôte', quality: 'med', duration: '14–17 maio', strategy: '0 congé. Viagem curta mediterrânea.', best: 'Riviera, Marseille/Cassis, Mallorca, Malta, Barcelona/Valencia' },
-    { id: 'w_jun27', date: 'Junho 2027', name: 'Grande janela verde', quality: 'good', duration: '4–5 dias', strategy: 'Usar 2 congés. Melhor mês para Alpes verdes.', best: 'Suíça verde, Dolomites, Chamonix, Áustria, Eslovênia' },
-    { id: 'w_jul27', date: '14 julho 2027', name: 'Fête Nationale', quality: 'med', duration: '14–18 julho', strategy: 'Pegar quinta e sexta. Verde forte, mas caro.', best: 'Chamonix, Suíça, Dolomites, Áustria, Eslovênia' },
-    { id: 'w_aug27', date: 'Agosto 2027', name: 'Janela possível', quality: 'bad', duration: '4–5 dias', strategy: 'Só com promoção. 15 agosto cai domingo.', best: 'Chamonix, Dolomites, Suíça, Áustria, Eslovênia' },
-    { id: 'w_final27', date: 'Final 2027', name: 'Antes do Brasil', quality: 'good', duration: '7–10 dias', strategy: 'Viagem memorável final, não mediana.', best: 'Grécia completa, Croácia+Eslovênia, Itália sul+Roma, Dolomites+Veneza' }
-  ];
+function trip(id, windowId, name, country, type, priority, duration, conges, why, route, risk, recommendation, whyNot="", priceMin=null, priceMax=null){
+  return { id, windowId, name, country, type, priority, duration, conges, why, route, risk, recommendation, whyNot, priceMin, priceMax, priceReal:"", weather:"", notes:"" };
+}
 
-  var trips = [
-    { id: 1, w: 'w_8mai', title: 'Nice + Èze + Mônaco', country: 'França + Mônaco', type: 'mediterraneo', priority: 'alta', price: 370, range: '€350–€370', days: '3–4 dias', conges: '1 congé', img: images.riviera, score: 9.0, why: 'Época excelente, estética forte, preço aprovado se inclui tudo.', route: 'Nice como base; Èze pela manhã; Mônaco à tarde; Nice, Promenade ou Villefranche no outro dia.', risk: 'Não transformar €370 em €500 com restaurante ou café caro em Mônaco.' },
-    { id: 2, w: 'w_8mai', title: 'Marseille + Cassis/Calanques', country: 'França', type: 'mediterraneo', priority: 'alta', price: 390, range: '€250–€500', days: '3–4 dias', conges: '0–1 congé', img: images.marseille, score: 8.7, why: 'Melhor custo-benefício no sul da França.', route: 'Marseille base; Vieux-Port; Notre-Dame; Cassis; Calanques.', risk: 'Calanques dependem de clima e energia física.' },
-    { id: 3, w: 'w_8mai', title: 'Barcelona ou Valencia', country: 'Espanha', type: 'mediterraneo', priority: 'media', price: 520, range: '€350–€600', days: '3–4 dias', conges: '1 congé', img: images.barcelona, score: 7.9, why: 'Boa se voo estiver barato; maio tem clima agradável.', route: 'Barcelona cidade + praia urbana ou Valencia com centro + praia.', risk: 'Se voo ou hospedagem subir, perde para Riviera ou Cassis.' },
-    { id: 4, w: 'w_8mai', title: 'Malta curta', country: 'Malta', type: 'mediterraneo', priority: 'media', price: 650, range: '€450–€700', days: '3–4 dias', conges: '1 congé', img: images.malta, score: 8.1, why: 'Boa em shoulder season, mas curta.', route: 'Valletta, Mdina, Three Cities.', risk: 'Só vale se voo estiver realmente bom.' },
-    { id: 5, w: 'w_asc26', title: 'Malta completa', country: 'Malta', type: 'mediterraneo', priority: 'alta', price: 700, range: '€550–€850', days: '4–5 dias', conges: '1 congé', img: images.malta, score: 9.0, why: 'Ascension dá tempo suficiente para Valletta, Mdina, Gozo e Comino.', route: 'Valletta ou Sliema base; Mdina; Gozo; Comino/Blue Lagoon se clima bom.', risk: 'Mar ainda pode não estar perfeito, mas fotos e cidades compensam.' },
-    { id: 6, w: 'w_asc26', title: 'Mallorca', country: 'Espanha', type: 'mediterraneo', priority: 'media', price: 700, range: '€500–€800', days: '4 dias', conges: '1 congé', img: images.mallorca, score: 8.4, why: 'Maio é forte: bonito antes do pico de verão.', route: 'Palma + Serra de Tramuntana + uma praia ou vila.', risk: 'Precisa de logística local; sem carro pode limitar.' },
-    { id: 7, w: 'w_asc26', title: 'Nice + Èze + Mônaco', country: 'França + Mônaco', type: 'mediterraneo', priority: 'alta', price: 520, range: '€400–€650', days: '4–5 dias', conges: '1 congé', img: images.riviera, score: 8.8, why: 'Janela perfeita se você não fizer no 8 de maio.', route: 'Nice, Èze, Mônaco, Villefranche ou Antibes.', risk: 'Feriado pode encarecer hospedagem.' },
-    { id: 8, w: 'w_pent26', title: 'Colmar + vilarejos da Alsácia', country: 'França', type: 'cultura', priority: 'alta', price: 350, range: '€250–€450', days: '3 dias', conges: '0', img: images.colmar, score: 8.5, why: 'Perfeito para 3 dias sem gastar congé.', route: 'Colmar + Eguisheim/Riquewihr + Strasbourg se couber.', risk: 'Menos grandioso que uma viagem internacional, mas muito racional.' },
-    { id: 9, w: 'w_pent26', title: 'Genebra + Chamonix leve', country: 'Suíça/França', type: 'verde', priority: 'media', price: 550, range: '€400–€650', days: '3 dias', conges: '0', img: images.chamonix, score: 7.7, why: 'Possível, mas Chamonix verde ideal é junho ou setembro.', route: 'Genebra curta + Chamonix centro ou Aiguille se clima bom.', risk: 'Pode ser cedo para trilhas verdes.' },
-    { id: 10, w: 'w_jun26', title: 'Chamonix verde', country: 'França', type: 'verde', priority: 'alta', price: 550, range: '€350–€650', days: '3–4 dias', conges: '1–2', img: images.chamonix, score: 9.0, why: 'Alpes verdes com custo mais controlado que Suíça ou Dolomites.', route: 'Chamonix; Aiguille du Midi; Mer de Glace; trilha leve.', risk: 'Verificar abertura de lifts e clima.' },
-    { id: 11, w: 'w_jun26', title: 'Suíça verde', country: 'Suíça', type: 'verde', priority: 'alta', price: 950, range: '€650–€1.050', days: '4 dias', conges: '1–2', img: images.swiss, score: 9.1, why: 'Lauterbrunnen/Interlaken começam a entrar na fase verde certa.', route: 'Interlaken base; Lauterbrunnen; Grindelwald ou Mürren; Lucerna.', risk: 'Caro; melhor final de junho ou setembro.' },
-    { id: 12, w: 'w_jun26', title: 'Eslovênia: Bled + Ljubljana', country: 'Eslovênia', type: 'verde', priority: 'alta', price: 700, range: '€500–€800', days: '4 dias', conges: '1–2', img: images.slovenia, score: 8.8, why: 'Muito equilibrado: verde, lago, cidade charmosa, custo menor que Suíça.', route: 'Ljubljana base + Lago Bled + mirantes.', risk: 'Voos/transfer podem definir se vale.' },
-    { id: 13, w: 'w_jun26', title: 'Áustria: Innsbruck + Hallstatt', country: 'Áustria', type: 'verde', priority: 'media', price: 750, range: '€550–€850', days: '4 dias', conges: '1–2', img: images.austria, score: 8.4, why: 'Alpes, lagos e estética alpina boa em junho.', route: 'Innsbruck + trem/ônibus para Hallstatt ou Salzburg.', risk: 'Hallstatt pode exigir logística longa.' },
-    { id: 14, w: 'w_jul26', title: 'Dolomites: Braies + Santa Maddalena', country: 'Itália', type: 'verde', priority: 'alta', price: 1050, range: '€800–€1.250', days: '4–6 dias', conges: '1 + teletrabalho', img: images.dolomites, score: 9.5, why: 'Época certa para lagos, trilhas e visual verde.', route: 'Bolzano/Ortisei/Cortina; Lago di Braies; Val di Funes; Seceda/Tre Cime se possível.', risk: 'Julho é caro e cheio; comprar só com preço aceitável.' },
-    { id: 15, w: 'w_jul26', title: 'Suíça verde', country: 'Suíça', type: 'verde', priority: 'alta', price: 1100, range: '€850–€1.300', days: '4–6 dias', conges: '1 + teletrabalho', img: images.swiss, score: 9.3, why: 'Tudo verde, lagos e cachoeiras fortes.', route: 'Interlaken; Lauterbrunnen; Grindelwald; Lucerna.', risk: 'Preço alto em julho.' },
-    { id: 16, w: 'w_jul26', title: 'Chamonix', country: 'França', type: 'verde', priority: 'alta', price: 650, range: '€450–€750', days: '4 dias', conges: '1', img: images.chamonix, score: 8.9, why: 'Alternativa alpina mais realista financeiramente.', route: 'Chamonix + trilhas + Aiguille/Mer de Glace.', risk: 'Pode lotar, mas menos agressivo que Suíça.' },
-    { id: 17, w: 'w_jul26', title: 'Áustria / Eslovênia', country: 'Áustria ou Eslovênia', type: 'verde', priority: 'media', price: 800, range: '€600–€950', days: '4 dias', conges: '1', img: images.slovenia, score: 8.5, why: 'Boa alternativa caso Dolomites/Suíça estejam caras.', route: 'Bled+Ljubljana ou Innsbruck+Hallstatt.', risk: 'Comparar preço de transporte.' },
-    { id: 18, w: 'w_sep26', title: 'Croácia: Split + Dubrovnik', country: 'Croácia', type: 'mediterraneo', priority: 'alta', price: 1100, range: '€900–€1.300', days: '6–7 dias', conges: '0', img: images.croatia, score: 9.6, why: 'Uma das melhores escolhas de setembro: mar, muralhas, sol e menos caos.', route: 'Split 2 dias; ilha próxima; Dubrovnik 2 dias; volta.', risk: 'Evitar transformar em viagem muito corrida.' },
-    { id: 19, w: 'w_sep26', title: 'Grécia: Athens + Santorini', country: 'Grécia', type: 'mediterraneo', priority: 'alta', price: 1250, range: '€1.000–€1.500', days: '6–7 dias', conges: '0', img: images.greece, score: 9.3, why: 'Setembro é ótimo para ilhas e Atenas menos sufocante.', route: 'Atenas 1–2 dias; Santorini 3 dias; retorno.', risk: 'Santorini pode encarecer; escolher hospedagem com cuidado.' },
-    { id: 20, w: 'w_sep26', title: 'Malta completa', country: 'Malta', type: 'mediterraneo', priority: 'media', price: 950, range: '€750–€1.100', days: '6–7 dias', conges: '0', img: images.malta, score: 8.8, why: 'Setembro tem mar bom e menos lotação que agosto.', route: 'Valletta, Mdina, Gozo, Comino, Three Cities.', risk: 'Menos variedade que Croácia/Grécia para uma semana inteira.' },
-    { id: 21, w: 'w_sep26', title: 'Puglia: Polignano + Monopoli', country: 'Itália', type: 'mediterraneo', priority: 'media', price: 1000, range: '€800–€1.200', days: '6–7 dias', conges: '0', img: images.italy, score: 8.7, why: 'Mais racional que Amalfi/Positano e muito fotogênico.', route: 'Bari base; Polignano; Monopoli; Alberobello se couber.', risk: 'Amalfi é mais icônica, mas mais cara.' },
-    { id: 22, w: 'w_sep26', title: 'Dolomites ou Suíça verde', country: 'Itália/Suíça', type: 'verde', priority: 'alta', price: 1200, range: '€850–€1.400', days: '6–7 dias', conges: '0', img: images.dolomites, score: 9.1, why: 'Setembro é excelente para natureza: luz boa e menos multidão.', route: 'Dolomites completa ou Interlaken/Lauterbrunnen/Lucerna.', risk: 'Clima pode virar; reservar com flexibilidade.' },
-    { id: 23, w: 'w_tous26', title: 'Roma + Vaticano + Veneza', country: 'Itália', type: 'cultura', priority: 'alta', price: 1000, range: '€800–€1.250', days: '6–9 dias', conges: 'férias', img: images.italy, score: 9.1, why: 'Outono é muito melhor que verão para cultura italiana.', route: 'Roma/Vaticano 3 dias; Veneza 2 dias; extra se houver folga.', risk: 'Não tentar colocar cidades demais.' },
-    { id: 24, w: 'w_tous26', title: 'Espanha: Madrid + Valencia/Barcelona', country: 'Espanha', type: 'cultura', priority: 'media', price: 900, range: '€700–€1.100', days: '5–8 dias', conges: 'férias', img: images.barcelona, score: 8.3, why: 'Clima ainda agradável e bom custo.', route: 'Madrid + Valencia ou Barcelona + Valencia.', risk: 'Menos sonho visual que Grécia/Croácia, mas muito racional.' },
-    { id: 25, w: 'w_tous26', title: 'Malta ou Atenas', country: 'Malta/Grécia', type: 'cultura', priority: 'media', price: 900, range: '€650–€1.100', days: '5–8 dias', conges: 'férias', img: images.malta, score: 8.2, why: 'Boa opção de sul da Europa fora do calor extremo.', route: 'Malta completa ou Atenas cultural.', risk: 'Para ilhas/praia, setembro/junho é melhor.' },
-    { id: 26, w: 'w_tous26', title: 'Krakow', country: 'Polônia', type: 'cultura', priority: 'media', price: 600, range: '€450–€750', days: '4–6 dias', conges: 'férias', img: images.krakow, score: 7.8, why: 'Econômico, bonito e cultural.', route: 'Old Town, Wawel, Kazimierz, bate-volta se quiser.', risk: 'Não é destino da sua lista mais emocional, mas ajuda orçamento.' },
-    { id: 27, w: 'w_11nov', title: 'Colmar/Strasbourg ou Genebra curto', country: 'França/Suíça', type: 'cultura', priority: 'baixa', price: 250, range: '€120–€350', days: '1–2 dias', conges: '0–1', img: images.colmar, score: 7.2, why: 'Janela curta; não vale gastar muito.', route: 'Bate-volta ou uma noite.', risk: 'Evitar voo ou destino longe.' },
-    { id: 28, w: 'w_noel', title: 'Grenoble + ski', country: 'França', type: 'neve', priority: 'alta', price: 700, range: '€500–€900', days: '3–6 dias', conges: 'férias', img: images.snow, score: 8.7, why: 'Melhor opção de ski racional sem destruir o orçamento.', route: 'Grenoble base + Chamrousse, Les 7 Laux, Alpe d’Huez ou Les Deux Alpes.', risk: 'Aluguel de equipamento e forfait podem subir custo.' },
-    { id: 29, w: 'w_noel', title: 'Lapônia snow/aurora', country: 'Finlândia', type: 'neve', priority: 'media', price: 2000, range: '€1.500–€2.500', days: '5–7 dias', conges: 'férias', img: images.snow, score: 8.9, why: 'Viagem sonho de neve/aurora.', route: 'Rovaniemi ou norte; aurora; neve; experiências de inverno.', risk: 'Muito cara: consome 2–3 viagens médias.' },
-    { id: 30, w: 'w_noel', title: 'Islândia snow/aurora', country: 'Islândia', type: 'neve', priority: 'media', price: 1750, range: '€1.300–€2.200', days: '5–7 dias', conges: 'férias', img: images.snow, score: 8.6, why: 'Paisagem dramática, aurora e neve.', route: 'Reykjavik + Golden Circle + costa sul se clima permitir.', risk: 'Clima pode cortar planos; caro.' },
-    { id: 31, w: 'w_noel', title: 'Colmar/Strasbourg + Stuttgart Natal', country: 'França/Alemanha', type: 'neve', priority: 'alta', price: 650, range: '€350–€750', days: '3–5 dias', conges: 'férias', img: images.colmar, score: 8.4, why: 'Natal bonito com custo controlado.', route: 'Strasbourg + Colmar + Stuttgart se couber.', risk: 'Muito procurado; reservar cedo.' },
-    { id: 32, w: 'w_inter', title: 'Grenoble ski ou Krakow', country: 'França/Polônia', type: 'neve', priority: 'alta', price: 650, range: '€400–€850', days: '4–5 dias', conges: 'intersemestre', img: images.snow, score: 8.3, why: 'Intersemestre curto: ski racional ou cidade econômica.', route: 'Grenoble ski ou Krakow cultural/inverno.', risk: 'Lapônia/Islândia aqui só se virar viagem luxo.' },
-    { id: 33, w: 'w_paq27', title: 'Roma + Vaticano + Veneza', country: 'Itália', type: 'cultura', priority: 'alta', price: 1000, range: '€750–€1.200', days: '5–8 dias', conges: 'Pâques', img: images.italy, score: 9.0, why: 'Primavera é excelente para Itália cultural.', route: 'Roma/Vaticano + Veneza; possível Florença se estender.', risk: 'Páscoa pode encarecer Roma; reservar cedo.' },
-    { id: 34, w: 'w_paq27', title: 'Barcelona + Valencia/Madrid', country: 'Espanha', type: 'cultura', priority: 'alta', price: 850, range: '€650–€1.000', days: '5–8 dias', conges: 'Pâques', img: images.barcelona, score: 8.6, why: 'Clima bom e custo mais racional.', route: 'Barcelona+Valencia ou Madrid+Valencia.', risk: 'Menos exclusivo, mas excelente custo-benefício.' },
-    { id: 35, w: 'w_paq27', title: 'Malta ou Athens + Santorini', country: 'Malta/Grécia', type: 'mediterraneo', priority: 'media', price: 1050, range: '€650–€1.400', days: '5–8 dias', conges: 'Pâques', img: images.greece, score: 8.2, why: 'Bom para fotos/cultura; cedo para praia perfeita.', route: 'Malta completa ou Atenas+Santorini.', risk: 'Zakynthos ainda é cedo.' },
-    { id: 36, w: 'w_asc27', title: 'Malta ou Mallorca', country: 'Malta/Espanha', type: 'mediterraneo', priority: 'alta', price: 750, range: '€550–€900', days: '4 dias', conges: '1', img: images.mallorca, score: 8.8, why: 'Ascension 2027 é janela perfeita para Mediterrâneo.', route: 'Malta completa curta ou Mallorca com Palma+Tramuntana.', risk: 'Comprar cedo para evitar preço de ponte.' },
-    { id: 37, w: 'w_asc27', title: 'Riviera ou Marseille/Cassis', country: 'França + Mônaco', type: 'mediterraneo', priority: 'alta', price: 550, range: '€300–€700', days: '4 dias', conges: '1', img: images.riviera, score: 8.6, why: 'Ótimo se você ainda não tiver feito em 2026.', route: 'Nice/Èze/Mônaco ou Marseille/Cassis.', risk: 'Repetir destino pode reduzir novidade.' },
-    { id: 38, w: 'w_pent27', title: 'Riviera / Marseille / Barcelona', country: 'França/Espanha', type: 'mediterraneo', priority: 'media', price: 550, range: '€280–€650', days: '3 dias', conges: '0', img: images.marseille, score: 8.1, why: 'Boa janela de 3 dias sem congé.', route: 'Escolher uma opção curta e barata.', risk: 'Não transformar em viagem cara demais para só 3 dias.' },
-    { id: 39, w: 'w_jun27', title: 'Suíça verde', country: 'Suíça', type: 'verde', priority: 'alta', price: 1150, range: '€800–€1.300', days: '4–5 dias', conges: '2', img: images.swiss, score: 9.6, why: 'Melhor janela para a Suíça do jeito que você quer: verde, lagos, cachoeiras.', route: 'Interlaken; Lauterbrunnen; Grindelwald/Mürren; Lucerna.', risk: 'Caro, mas é a época certa.' },
-    { id: 40, w: 'w_jun27', title: 'Dolomites verde', country: 'Itália', type: 'verde', priority: 'alta', price: 1150, range: '€800–€1.250', days: '4–5 dias', conges: '2', img: images.dolomites, score: 9.4, why: 'Final de junho entra na temporada principal.', route: 'Lago di Braies; Santa Maddalena; Seceda/Tre Cime conforme logística.', risk: 'Carro/transporte local podem complicar.' },
-    { id: 41, w: 'w_jun27', title: 'Chamonix / Áustria / Eslovênia', country: 'França/Áustria/Eslovênia', type: 'verde', priority: 'alta', price: 800, range: '€450–€1.000', days: '4–5 dias', conges: '2', img: images.slovenia, score: 8.9, why: 'Alternativas verdes mais racionais que Suíça/Dolomites.', route: 'Chamonix ou Bled+Ljubljana ou Innsbruck+Hallstatt.', risk: 'Escolher conforme preço real.' },
-    { id: 42, w: 'w_jul27', title: 'Chamonix', country: 'França', type: 'verde', priority: 'alta', price: 750, range: '€550–€900', days: '5 dias', conges: '2', img: images.chamonix, score: 8.8, why: 'Custo mais controlado no pico verde.', route: 'Chamonix completa com trilhas e mirantes.', risk: 'Julho cheio; reservar cedo.' },
-    { id: 43, w: 'w_jul27', title: 'Suíça ou Dolomites', country: 'Suíça/Itália', type: 'verde', priority: 'media', price: 1250, range: '€950–€1.500', days: '5 dias', conges: '2', img: images.swiss, score: 8.9, why: 'Visual fortíssimo, mas caro em julho.', route: 'Suíça verde ou Dolomites.', risk: 'Só fazer se aparecer preço bom.' },
-    { id: 44, w: 'w_jul27', title: 'Áustria ou Eslovênia', country: 'Áustria/Eslovênia', type: 'verde', priority: 'alta', price: 900, range: '€700–€1.150', days: '5 dias', conges: '2', img: images.austria, score: 8.6, why: 'Mais equilibrado que Suíça/Dolomites em julho.', route: 'Hallstatt+Innsbruck ou Bled+Ljubljana.', risk: 'Bled/Hallstatt lotam; reservar cedo.' },
-    { id: 45, w: 'w_aug27', title: 'Alpes verdes com cuidado', country: 'França/Suíça/Itália/Áustria', type: 'caro', priority: 'baixa', price: 1200, range: '€600–€1.600', days: '4–5 dias', conges: '2', img: images.dolomites, score: 6.8, why: 'Agosto é bonito, mas caro e cheio.', route: 'Chamonix se racional; Suíça/Dolomites só com promoção.', risk: 'Alta temporada pode destruir orçamento.' },
-    { id: 46, w: 'w_final27', title: 'Croácia + Eslovênia', country: 'Croácia/Eslovênia', type: 'caro', priority: 'alta', price: 1600, range: '€1.200–€2.000', days: '7–10 dias', conges: 'fim estágio', img: images.croatia, score: 9.3, why: 'Melhor equilíbrio para viagem final: mar + natureza.', route: 'Split, Dubrovnik, Ljubljana, Bled.', risk: 'Precisa de roteiro bem montado para não correr demais.' },
-    { id: 47, w: 'w_final27', title: 'Grécia completa', country: 'Grécia', type: 'caro', priority: 'media', price: 1850, range: '€1.400–€2.300', days: '7–10 dias', conges: 'fim estágio', img: images.greece, score: 9.1, why: 'Viagem sonho mediterrânea.', route: 'Athens, Santorini, Zakynthos.', risk: 'Pode ficar cara; só se saldo permitir.' },
-    { id: 48, w: 'w_final27', title: 'Itália sul + Roma', country: 'Itália', type: 'caro', priority: 'media', price: 1750, range: '€1.300–€2.200', days: '7–10 dias', conges: 'fim estágio', img: images.italy, score: 8.9, why: 'Roteiro muito bonito se for setembro.', route: 'Roma/Vaticano + Amalfi/Positano + Polignano/Monopoli.', risk: 'Amalfi/Positano pesam muito.' }
-  ];
+const trips = [
+  trip("t-001","w-2026-05-08","Nice + Eze + Monaco","França / Mônaco","Mediterrâneo","Alta","quinta 7 maio a domingo 10 maio",1,"Muito bom para essa data. Primavera na Riviera é uma das melhores épocas: clima agradável, luz bonita e menos caos que julho/agosto. A Riviera e Provence funcionam melhor em primavera e outono, apesar de feriados de maio poderem aumentar a lotação.","Nice como base; Eze em meio dia; Monaco em meio dia ou um dia; passeio costeiro se sobrar tempo.","Feriados de maio podem aumentar lotação e preço.","vale","Evitar julho/agosto se o preço estiver absurdo e a lotação for alta."),
+  trip("t-002","w-2026-05-08","Marseille + Cassis/Calanques","França","Mediterrâneo","Alta","quinta 7 maio a domingo 10 maio",1,"Excelente para maio. Dá para fazer Marseille como base, Cassis e Calanques em um dia, e talvez Aix-en-Provence ou passeio costeiro.","Marseille base; Cassis/Calanques em um dia; Aix-en-Provence ou passeio costeiro opcional.","Clima costeiro e lotação de feriado; Calanques dependem de condição/local acessível.","vale"),
+  trip("t-003","w-2026-05-08","Barcelona ou Valencia","Espanha","Cidade / Mediterrâneo","Média","quinta 7 maio a domingo 10 maio",1,"Bom se aparecer voo barato. Maio é forte para Espanha: cidade viva, clima agradável e menos calor extremo.","Escolher Barcelona ou Valencia conforme voo; roteiro urbano, comida, praia/costa e fotos.","Só compensa se aparecer voo barato.","vale se preço estiver bom"),
+  trip("t-004","w-2026-05-08","Malta","Malta","Mediterrâneo","Média","quinta 7 maio a domingo 10 maio",1,"Boa se aparecer passagem barata. Malta funciona muito bem em shoulder season, especialmente primavera e outono, com clima confortável e menos multidão que o verão.","Valletta, Mdina, costa; encaixar Gozo/Comino se logística permitir.","Voo pode encarecer em ponte; mar pode não ser o foco principal.","vale se preço estiver bom"),
 
-  var scenarios = [
-    { name: 'Econômico inteligente', cost: 4300, ids: [1, 10, 18, 26, 31, 34, 41, 46], desc: 'Faz muitas viagens boas, evita Lapônia/Islândia e limita destinos muito caros.' },
-    { name: 'Equilibrado com 1 luxo', cost: 5400, ids: [1, 10, 18, 23, 28, 34, 39], desc: 'Inclui uma grande viagem forte e ainda tenta preservar margem.' },
-    { name: 'Sonho agressivo', cost: 7200, ids: [1, 14, 19, 23, 29, 39, 46], desc: 'Muito bonito, mas provavelmente estoura orçamento sem renda extra.' }
-  ];
+  trip("t-005","w-2026-05-14","Malta — Valletta + Mdina + Gozo/Comino","Malta","Mediterrâneo","Alta","quarta 13 maio a domingo 17 maio",1,"Muito forte para essa ponte. Não é pleno verão, mas já dá a estética mediterrânea, cidades lindas, mar azul e menos sufoco de alta temporada.","Valletta + Mdina; Gozo/Comino se o tempo e barcos ajudarem; costa e mirantes.","Depende de voo bom e logística de ilhas.","vale"),
+  trip("t-006","w-2026-05-14","Nice + Eze + Monaco","França / Mônaco","Mediterrâneo","Alta","quarta 13 maio a domingo 17 maio",1,"Se você não fizer no 8 de maio, essa é provavelmente a melhor janela curta para Riviera.","Nice base; Eze; Monaco; passeio costeiro.","Pode ficar mais caro por ser ponte de Ascension.","vale"),
+  trip("t-007","w-2026-05-14","Mallorca","Espanha","Mediterrâneo","Alta","quarta 13 maio a domingo 17 maio",1,"Muito boa em maio: paisagem bonita, praias, vilas e menos caro/cheio que julho e agosto.","Palma; vilas; mirantes; praias conforme clima.","Passagem e hospedagem podem subir na ponte.","vale se preço estiver bom"),
+  trip("t-008","w-2026-05-14","Marseille + Cassis/Calanques","França","Mediterrâneo","Alta","quarta 13 maio a domingo 17 maio",1,"Também encaixa muito bem, especialmente se você quiser gastar menos do que uma viagem internacional.","Marseille; Cassis/Calanques; Aix-en-Provence opcional.","Lotação de feriado e custo de transporte se comprado em cima da hora.","vale"),
 
-  var selected = loadSelected();
+  trip("t-009","w-2026-05-25","Colmar + vilarejos da Alsácia","França","Cultura","Alta","sexta 22 maio à noite a segunda 25 maio",0,"Perfeito para 3 dias. Bonito, fotogênico, logística simples e não exige uma janela gigante.","Colmar base; vilarejos da Alsácia; fotos e centro histórico.","Pode ficar cheio em feriado, mas é logisticamente simples.","vale"),
+  trip("t-010","w-2026-05-25","Marseille + Cassis","França","Mediterrâneo","Média","sexta 22 maio à noite a segunda 25 maio",0,"Se ainda não tiver feito.","Marseille + Cassis em 3 dias.","Só priorizar se ainda não tiver feito outra janela parecida.","vale se preço estiver bom"),
+  trip("t-011","w-2026-05-25","Barcelona ou Valencia","Espanha","Cidade / Mediterrâneo","Média","sexta 22 maio à noite a segunda 25 maio",0,"Se aparecer voo barato.","Escolher uma cidade; roteiro urbano, comida, fotos e costa.","A janela é curta; voo caro reduz custo-benefício.","vale se preço estiver bom"),
+  trip("t-012","w-2026-05-25","Genebra + Chamonix leve","Suíça / França","Alpes verdes leve","Média","sexta 22 maio à noite a segunda 25 maio",0,"Pode funcionar, mas Chamonix verde ideal mesmo eu deixaria para junho/setembro.","Genebra + bate-volta ou extensão leve a Chamonix.","Ainda pode ser cedo para verde perfeito e trilhas altas.","vale se preço estiver bom","Fora de junho/setembro, pode não entregar a estética verde ideal."),
 
-  function safeGet(id) { return document.getElementById(id); }
+  trip("t-013","w-2026-06","Chamonix verde","França","Alpes verdes","Alta","sexta a segunda, ou quinta à noite a domingo",1,"Muito bom a partir de junho. Ideal para montanha, Aiguille du Midi, Mer de Glace, paisagem alpina e começo de trilhas.","Chamonix base; Aiguille du Midi; Mer de Glace; trilhas leves conforme condição.","Começo de junho pode limitar algumas trilhas; preço varia.","vale"),
+  trip("t-014","w-2026-06","Suíça verde — Interlaken + Lauterbrunnen + Lucerna","Suíça","Alpes verdes","Máxima","sexta a segunda, ou quinta à noite a domingo",1,"Aqui entra do jeito certo: verde, cachoeiras, lagos e montanhas, não neve. Para hiking nos Alpes suíços, a janela boa é de junho a setembro, com atenção para o fato de que no começo de junho ainda pode haver neve em trilhas mais altas; a segunda metade de junho é mais segura.","Interlaken; Lauterbrunnen; Lucerna; lagos e mirantes.","Preço suíço alto; começo de junho pode ter neve em trilhas altas.","vale se preço estiver bom","Não priorizar no inverno se o objetivo for Suíça verde."),
+  trip("t-015","w-2026-06","Eslovênia — Lago Bled + Ljubljana","Eslovênia","Alpes verdes / Cultura","Alta","sexta a segunda, ou quinta à noite a domingo",1,"Muito boa em junho: verde, lago bonito, cidade charmosa e menos lotação que agosto.","Ljubljana + Lago Bled; mirantes e centro histórico.","Voo/logística podem pesar; Bled pode ficar mais cheio perto do verão.","vale"),
+  trip("t-016","w-2026-06","Áustria — Innsbruck + Hallstatt","Áustria","Alpes verdes","Média","sexta a segunda, ou quinta à noite a domingo",1,"Boa para montanhas verdes, lagos e estética alpina.","Innsbruck; Hallstatt; lagos e montanhas.","Logística pode exigir mais tempo; custo pode subir.","vale se preço estiver bom"),
+  trip("t-017","w-2026-06","Dolomites, só se for final de junho","Itália","Alpes verdes","Máxima","final de junho",1,"Começo de junho ainda pode ser cedo. Para Dolomites, o período forte de trilhas começa no final de junho e vai até meados de setembro.","Lago di Braies; Santa Maddalena; base alpina conforme transporte.","Começo de junho pode ser cedo; logística sem carro pode exigir planejamento.","vale se preço estiver bom","Evitar começo de junho se o objetivo for trilha/verde perfeito."),
 
-  function loadSelected() {
-    try {
-      var raw = localStorage.getItem('selectedTripsV3');
-      var arr = raw ? JSON.parse(raw) : [];
-      return new Set(arr);
-    } catch (e) {
-      return new Set();
-    }
+  trip("t-018","w-2026-07-14","Dolomites — Lago di Braies + Santa Maddalena","Itália","Alpes verdes","Máxima","sábado 11 julho a terça 14 julho",1,"Essa é uma das melhores janelas para Dolomites. Julho é mais caro e cheio, mas é época certa: verde, lagos, trilhas, refúgios e lifts funcionando.","Lago di Braies; Santa Maddalena; trilhas; refúgios/lifts se disponíveis.","Julho é caro e cheio; reservar cedo.","vale se preço estiver bom"),
+  trip("t-019","w-2026-07-14","Suíça verde — Interlaken + Lauterbrunnen + Lucerna","Suíça","Alpes verdes","Máxima","sábado 11 julho a terça 14 julho",1,"Muito forte visualmente. Tudo tende a estar verde, lagos bonitos e atividades funcionando. O problema é preço.","Interlaken; Lauterbrunnen; Lucerna.","Preço alto na Suíça, especialmente em julho.","vale se preço estiver bom"),
+  trip("t-020","w-2026-07-14","Chamonix","França","Alpes verdes","Alta","sábado 11 julho a terça 14 julho",1,"Excelente e mais simples que Suíça/Dolomites. Boa opção se você quiser Alpes verdes sem destruir o orçamento.","Chamonix; Aiguille du Midi; Mer de Glace; trilhas leves.","Pode estar cheio em julho, mas logística é mais simples.","vale"),
+  trip("t-021","w-2026-07-14","Áustria — Innsbruck + Hallstatt","Áustria","Alpes verdes","Alta","sábado 11 julho a terça 14 julho",1,"Muito bom para julho, com paisagem alpina forte.","Innsbruck + Hallstatt; lagos e montanhas.","Pode ficar caro/cheio; logística exige atenção.","vale se preço estiver bom"),
+  trip("t-022","w-2026-07-14","Eslovênia — Lago Bled + Ljubljana","Eslovênia","Alpes verdes / Cultura","Alta","sábado 11 julho a terça 14 julho",1,"Muito bom, mas Bled pode estar cheio.","Ljubljana + Lago Bled.","Bled pode estar cheio em julho.","vale se preço estiver bom"),
+
+  trip("t-023","w-2026-09-01","Croácia — Split + Dubrovnik","Croácia","Mediterrâneo","Máxima","1 a 7 setembro 2026",0,"Setembro é excelente: clima ainda de verão, mar bonito, mas menos caos que julho/agosto. Para Croácia e Eslovênia, primavera e outono, especialmente meados de maio-junho e setembro-início de outubro, oferecem boa mistura de clima e menos multidões.","Split + Dubrovnik; costa, centro histórico e mirantes.","Pode exigir logística entre cidades; custo depende de voo/hospedagem.","vale"),
+  trip("t-024","w-2026-09-01","Grécia — Athens + Santorini","Grécia","Mediterrâneo","Máxima","1 a 7 setembro 2026",0,"Muito forte em setembro. Para ilhas gregas, final de maio a começo de outubro funciona para praia, e setembro costuma ser ótimo por água mais quente e menos multidão que agosto.","Athens; Santorini; fotos, cultura e mar.","Santorini pode continuar cara; logística de ilha exige cuidado.","vale se preço estiver bom"),
+  trip("t-025","w-2026-09-01","Malta — Valletta + Mdina + Gozo/Comino","Malta","Mediterrâneo","Alta","1 a 7 setembro 2026",0,"Setembro é uma das melhores épocas: mar ainda bom, clima quente, menos multidão que agosto.","Valletta; Mdina; Gozo/Comino; costa.","Voo/hospedagem podem subir se comprado tarde.","vale"),
+  trip("t-026","w-2026-09-01","Itália sul — Amalfi Coast + Positano ou Polignano a Mare + Monopoli","Itália","Mediterrâneo","Alta","1 a 7 setembro 2026",0,"Setembro é muito melhor que agosto: ainda tem clima de verão, mas com menos peso de alta temporada.","Amalfi/Positano ou Polignano/Monopoli; escolher conforme preço e logística.","Amalfi/Positano pode ser caro; logística costeira pode cansar.","vale se preço estiver bom"),
+  trip("t-027","w-2026-09-01","Dolomites","Itália","Alpes verdes","Máxima","1 a 7 setembro 2026",0,"Setembro também é excelente para Dolomites: paisagem ainda forte, menos multidão que agosto e luz bonita.","Lago di Braies; Santa Maddalena; trilhas e Veneza se combinar.","Clima pode começar a mudar; logística precisa planejamento.","vale"),
+  trip("t-028","w-2026-09-01","Suíça verde","Suíça","Alpes verdes","Máxima","1 a 7 setembro 2026",0,"Também faz muito sentido em setembro: ainda verde, menos lotado que julho/agosto e com clima geralmente bom.","Interlaken; Lauterbrunnen; Lucerna.","Custo suíço alto; clima de montanha variável.","vale se preço estiver bom"),
+
+  trip("t-029","w-2026-10-23","Roma + Vaticano + Veneza","Itália","Cultura","Alta","23 outubro a 1 novembro 2026",0,"Muito forte. Para Itália, final de primavera e começo de outono são os períodos mais agradáveis em clima; setembro e outubro são excelentes para cidades como Roma e Veneza.","Roma + Vaticano + Veneza; focar cultura, arquitetura e fotos.","Itinerário pode ficar corrido se tentar encaixar demais.","vale"),
+  trip("t-030","w-2026-10-23","Madrid + Valencia ou Barcelona","Espanha","Cultura / Cidade","Média","23 outubro a 1 novembro 2026",0,"Bom para outono: cidade, comida, fotos, clima ainda agradável.","Madrid + Valencia ou Barcelona; escolher combinação conforme preço.","Pode perder prioridade se Itália/Malta estiverem com bom preço.","vale se preço estiver bom"),
+  trip("t-031","w-2026-10-23","Malta","Malta","Mediterrâneo / Cultura","Alta","23 outubro a 1 novembro 2026",0,"Ainda pode ser ótima em outubro, principalmente para explorar cidades e costa sem calor extremo.","Valletta; Mdina; costa; Gozo se logística permitir.","Mar pode não ser foco total; clima pode variar.","vale"),
+  trip("t-032","w-2026-10-23","Athens","Grécia","Cultura","Média","23 outubro a 1 novembro 2026",0,"Boa em outubro: menos calor, mais confortável para Acrópole e cidade.","Acrópole; Plaka; mirantes; museus.","Não é a melhor janela para praia perfeita.","vale se preço estiver bom"),
+  trip("t-033","w-2026-10-23","Krakow","Polônia","Cultura / Econômica","Média","23 outubro a 1 novembro 2026",0,"Boa opção se você quiser viagem bonita, cultural e mais barata.","Centro histórico; Kazimierz; cafés; passeios culturais.","Menos prioritário se o objetivo for Mediterrâneo ou natureza.","vale se preço estiver bom"),
+
+  trip("t-034","w-2026-12-17","Lapônia — neve/aurora","Finlândia","Neve / Aurora","Máxima","17 dezembro 2026 a 3 janeiro 2027",0,"Excelente para experiência de inverno. A aurora na Finlândia é mais visível do fim de agosto a abril, com picos fortes em setembro-outubro e fevereiro-março; dezembro/janeiro entregam o imaginário de neve profunda e Natal.","Lapônia; neve; aurora; experiência de inverno/Natal.","Muito cara; pouca luz; pode substituir 2–3 viagens médias.","só se for sonho","Não faz sentido se a prioridade for custo/quantidade de viagens."),
+  trip("t-035","w-2026-12-17","Islândia — snow/aurora","Islândia","Neve / Aurora","Máxima","17 dezembro 2026 a 3 janeiro 2027",0,"Boa para paisagem dramática, neve e aurora. É caro e clima pode atrapalhar, mas é experiência única.","Reykjavik; paisagens; aurora; passeios conforme clima.","Caro e clima pode atrapalhar; pode substituir 2–3 viagens médias.","só se for sonho"),
+  trip("t-036","w-2026-12-17","Grenoble + ski nos Alpes franceses","França","Neve / Ski","Máxima","17 dezembro 2026 a 3 janeiro 2027",0,"Aqui sim entra sua ideia de ski. Grenoble como base urbana e estações ao redor, tipo Chamrousse, Les 7 Laux, Alpe d’Huez ou Les Deux Alpes. Boa opção se quiser ski com logística francesa e menos viagem internacional grande.","Grenoble base; Chamrousse, Les 7 Laux, Alpe d’Huez ou Les Deux Alpes.","Custo de equipamento/aula/ski pass; neve depende da estação.","vale"),
+  trip("t-037","w-2026-12-17","Colmar + Strasbourg","França","Natal / Cultura","Alta","17 dezembro 2026 a 3 janeiro 2027",0,"Excelente para mercado de Natal, estética e viagem mais simples.","Colmar + Strasbourg; mercados natalinos; vilarejos se possível.","Lotação nos mercados de Natal.","vale"),
+  trip("t-038","w-2026-12-17","Stuttgart","Alemanha","Natal / Cultura","Média","17 dezembro 2026 a 3 janeiro 2027",0,"Faz muito mais sentido no Natal do que no resto do ano, por causa dos mercados natalinos.","Mercados de Natal e centro.","Fora do Natal, não gastaria feriado premium.","vale se preço estiver bom","Não priorizar fora do período de mercado natalino."),
+  trip("t-039","w-2026-12-17","Innsbruck / Áustria inverno","Áustria","Neve / Natal","Alta","17 dezembro 2026 a 3 janeiro 2027",0,"Boa para neve, montanha e clima alpino.","Innsbruck; paisagem alpina; mercado/clima de inverno.","Pode ficar caro no período de festas.","vale se preço estiver bom"),
+  trip("t-040","w-2026-12-17","Krakow","Polônia","Cultura / Econômica","Média","17 dezembro 2026 a 3 janeiro 2027",0,"Boa opção de inverno mais econômica.","Centro histórico; cafés; viagem cultural de inverno.","Frio e menos luz; não é viagem de neve/aurora sonho.","vale se preço estiver bom"),
+
+  trip("t-041","w-2027-01-25","Grenoble + ski","França","Neve / Ski","Máxima","25 a 29 janeiro 2027",0,"Muito boa para janeiro.","Grenoble base; estação de ski ao redor.","Custo de ski pass/equipamento; condição de neve varia.","vale"),
+  trip("t-042","w-2027-01-25","Lapônia","Finlândia","Neve / Aurora","Máxima","25 a 29 janeiro 2027",0,"Boa para neve, mas pode ser cara e com pouca luz.","Lapônia; neve; aurora; experiências de inverno.","Cara; pouca luz; pode substituir 2–3 viagens médias.","só se for sonho"),
+  trip("t-043","w-2027-01-25","Islândia","Islândia","Neve / Aurora","Máxima","25 a 29 janeiro 2027",0,"Boa para aurora/neve, mas pode ter clima pesado.","Reykjavik; aurora; paisagens conforme clima.","Clima pesado e custo alto.","só se for sonho"),
+  trip("t-044","w-2027-01-25","Innsbruck","Áustria","Neve / Ski","Alta","25 a 29 janeiro 2027",0,"Boa para neve/ski.","Innsbruck; montanhas; ski/neve.","Custo e logística.","vale se preço estiver bom"),
+  trip("t-045","w-2027-01-25","Krakow","Polônia","Cultura / Econômica","Média","25 a 29 janeiro 2027",0,"Boa opção econômica e cultural.","Centro histórico; cafés; museus.","Menos prioritário se o objetivo for ski/neve.","vale se preço estiver bom"),
+
+  trip("t-046","w-2027-03-27","Roma + Vaticano + Veneza","Itália","Cultura","Alta","27 março a 31 março 2027",0,"Muito forte para primavera. Menos calor que verão e ótima época para turismo cultural.","Roma + Vaticano + Veneza.","Pode ficar corrido; passagem/hospedagem de Páscoa pode subir.","vale"),
+  trip("t-047","w-2027-03-27","Barcelona + Valencia ou Madrid","Espanha","Cultura / Cidade","Alta","27 março a 31 março 2027",0,"Muito bom.","Barcelona + Valencia ou Madrid; ajustar conforme preço.","Páscoa pode encarecer; escolher combinação realista.","vale se preço estiver bom"),
+  trip("t-048","w-2027-03-27","Malta","Malta","Mediterrâneo / Cultura","Alta","27 março a 31 março 2027",0,"Boa para Valletta, Mdina e Gozo. O mar pode estar frio, mas para fotos e exploração é ótimo.","Valletta; Mdina; Gozo.","Mar pode estar frio; não focar em banho.","vale"),
+  trip("t-049","w-2027-03-27","Athens + Santorini","Grécia","Cultura / Mediterrâneo","Média","27 março a 31 março 2027",0,"Boa para fotos e cultura. Para banho e praia perfeita, melhor junho ou setembro.","Athens + Santorini; cultura e fotos.","Não é a melhor época para praia perfeita.","vale se preço estiver bom","Para banho e praia perfeita, melhor junho ou setembro."),
+  trip("t-050","w-2027-03-27","Polignano a Mare + Monopoli","Itália","Mediterrâneo","Média","27 março a 31 março 2027",0,"Pode ser bonito, mas para vibe mar eu preferiria setembro.","Polignano a Mare + Monopoli.","Ainda cedo para vibe mar ideal.","vale se preço estiver bom","Para vibe mar, setembro é melhor."),
+
+  trip("t-051","w-2027-05-06","Malta","Malta","Mediterrâneo","Alta","quinta 6 a domingo 9 maio",1,"Excelente.","Valletta; Mdina; Gozo/Comino conforme logística.","Passagens de ponte podem subir.","vale"),
+  trip("t-052","w-2027-05-06","Mallorca","Espanha","Mediterrâneo","Alta","quinta 6 a domingo 9 maio",1,"Excelente.","Palma; vilas; mirantes; praia conforme clima.","Passagem/hospedagem podem subir.","vale"),
+  trip("t-053","w-2027-05-06","Nice + Eze + Monaco","França / Mônaco","Mediterrâneo","Alta","quinta 6 a domingo 9 maio",1,"Excelente se você ainda não tiver feito.","Nice + Eze + Monaco.","Repetição se já tiver feito em 2026.","vale"),
+  trip("t-054","w-2027-05-06","Marseille + Cassis/Calanques","França","Mediterrâneo","Alta","quinta 6 a domingo 9 maio",1,"Muito bom.","Marseille + Cassis/Calanques.","Lotação de ponte.","vale"),
+  trip("t-055","w-2027-05-06","Barcelona / Valencia","Espanha","Cidade / Mediterrâneo","Média","quinta 6 a domingo 9 maio",1,"Muito bom.","Barcelona ou Valencia.","Só se passagem estiver boa.","vale se preço estiver bom"),
+  trip("t-056","w-2027-05-06","Eslovênia — Bled + Ljubljana","Eslovênia","Alpes verdes / Cultura","Média","quinta 6 a domingo 9 maio",1,"Já começa a ficar boa e verde, mas junho/setembro são melhores.","Ljubljana + Bled.","Ainda não é a melhor janela verde.","vale se preço estiver bom","Junho/setembro são melhores."),
+  trip("t-057","w-2027-05-06","Suíça verde","Suíça","Alpes verdes","Média","quinta 6 a domingo 9 maio",1,"Possível, mas eu não colocaria como prioridade máxima ainda. Para garantir tudo verdinho, melhor junho ou setembro.","Interlaken/Lauterbrunnen/Lucerna se aceitar risco.","Pode não estar tudo verdinho; custo alto.","não priorizar","Melhor junho ou setembro para garantir tudo verdinho."),
+
+  trip("t-058","w-2027-05-17","Nice + Eze + Monaco","França / Mônaco","Mediterrâneo","Alta","sexta à noite a segunda à noite",0,"Muito bom.","Nice + Eze + Monaco.","Pode repetir se já tiver feito.","vale"),
+  trip("t-059","w-2027-05-17","Marseille + Cassis","França","Mediterrâneo","Alta","sexta à noite a segunda à noite",0,"Muito bom.","Marseille + Cassis.","Lotação de feriado; custo de última hora.","vale"),
+  trip("t-060","w-2027-05-17","Mallorca","Espanha","Mediterrâneo","Alta","sexta à noite a segunda à noite",0,"Muito bom se passagem estiver boa.","Mallorca em roteiro curto.","Janela curta; voo precisa ser bom.","vale se preço estiver bom"),
+  trip("t-061","w-2027-05-17","Malta","Malta","Mediterrâneo","Alta","sexta à noite a segunda à noite",0,"Muito bom.","Valletta + Mdina; costa.","Janela curta para Gozo/Comino se logística complicar.","vale"),
+  trip("t-062","w-2027-05-17","Barcelona / Valencia","Espanha","Cidade / Mediterrâneo","Média","sexta à noite a segunda à noite",0,"Muito bom.","Barcelona ou Valencia.","Só se voo estiver barato.","vale se preço estiver bom"),
+  trip("t-063","w-2027-05-17","Colmar","França","Cultura","Média","sexta à noite a segunda à noite",0,"Boa opção mais simples.","Colmar e vilarejos próximos.","Menos especial se já fez Alsácia.","vale se preço estiver bom"),
+
+  trip("t-064","w-2027-06","Suíça verde — Interlaken + Lauterbrunnen + Lucerna","Suíça","Alpes verdes","Máxima","janela artificial forte para 4 ou 5 dias",2,"Essa é uma das melhores janelas para a Suíça do jeito que você quer: verde, cachoeiras, lagos, paisagem alpina e sem foco em neve. Final de junho é melhor que começo de junho para trilhas mais altas.","Interlaken; Lauterbrunnen; Lucerna.","Custo suíço alto; final de junho melhor que começo.","vale se preço estiver bom","Não inverno; objetivo é Suíça verde."),
+  trip("t-065","w-2027-06","Chamonix verde","França","Alpes verdes","Alta","janela artificial forte para 4 ou 5 dias",2,"Excelente para junho.","Chamonix; Aiguille du Midi; Mer de Glace; trilhas.","Clima de montanha variável.","vale"),
+  trip("t-066","w-2027-06","Dolomites — Lago di Braies + Santa Maddalena","Itália","Alpes verdes","Máxima","janela artificial forte para 4 ou 5 dias",2,"Final de junho é muito bom. Começo de junho pode ser cedo; final de junho já entra na temporada principal.","Lago di Braies; Santa Maddalena; trilhas; Veneza se combinar.","Começo de junho pode ser cedo; logística complexa.","vale se preço estiver bom"),
+  trip("t-067","w-2027-06","Áustria — Hallstatt + Innsbruck","Áustria","Alpes verdes","Alta","janela artificial forte para 4 ou 5 dias",2,"Muito boa.","Hallstatt + Innsbruck.","Logística e custo podem pesar.","vale se preço estiver bom"),
+  trip("t-068","w-2027-06","Eslovênia — Lago Bled + Ljubljana","Eslovênia","Alpes verdes / Cultura","Alta","janela artificial forte para 4 ou 5 dias",2,"Muito boa.","Ljubljana + Lago Bled.","Bled pode encher; voo/logística.","vale"),
+  trip("t-069","w-2027-06","Croácia — Split + Dubrovnik","Croácia","Mediterrâneo","Alta","janela artificial forte para 4 ou 5 dias",2,"Boa antes do pico total.","Split + Dubrovnik.","Pode ficar corrido em 4–5 dias; logística entre cidades.","vale se preço estiver bom"),
+  trip("t-070","w-2027-06","Grécia — Santorini ou Zakynthos","Grécia","Mediterrâneo","Alta","janela artificial forte para 4 ou 5 dias",2,"Boa, especialmente antes da alta temporada pesada.","Escolher Santorini ou Zakynthos; fotos e mar.","Ilhas podem ficar caras; escolher uma para não correr demais.","vale se preço estiver bom"),
+
+  trip("t-071","w-2027-07-14","Suíça verde","Suíça","Alpes verdes","Máxima","quarta 14 a domingo 18 julho",2,"Muito forte visualmente, mas caro.","Interlaken; Lauterbrunnen; Lucerna.","Muito caro em julho.","vale se preço estiver bom"),
+  trip("t-072","w-2027-07-14","Dolomites","Itália","Alpes verdes","Máxima","quarta 14 a domingo 18 julho",2,"Muito forte visualmente, mas cheio/caro.","Lago di Braies; Santa Maddalena; trilhas.","Cheio e caro em julho.","vale se preço estiver bom"),
+  trip("t-073","w-2027-07-14","Chamonix","França","Alpes verdes","Alta","quarta 14 a domingo 18 julho",2,"Muito bom e talvez mais realista.","Chamonix; montanhas; trilhas.","Pode estar cheio, mas tende a ser mais realista que Suíça/Dolomites.","vale"),
+  trip("t-074","w-2027-07-14","Áustria — Hallstatt/Innsbruck","Áustria","Alpes verdes","Alta","quarta 14 a domingo 18 julho",2,"Muito bom.","Hallstatt + Innsbruck.","Alta temporada; logística.","vale se preço estiver bom"),
+  trip("t-075","w-2027-07-14","Eslovênia — Bled/Ljubljana","Eslovênia","Alpes verdes / Cultura","Alta","quarta 14 a domingo 18 julho",2,"Muito bom, mas Bled pode lotar.","Bled + Ljubljana.","Bled pode lotar.","vale se preço estiver bom"),
+
+  trip("t-076","w-2027-08","Dolomites","Itália","Alpes verdes","Média","Agosto 2027",0,"Muito bonito, mas reservar cedo.","Dolomites; lagos; trilhas.","Agosto caro/cheio; reservar cedo.","vale se preço estiver bom"),
+  trip("t-077","w-2027-08","Suíça verde","Suíça","Alpes verdes","Média","Agosto 2027",0,"Muito bonita, mas cara.","Interlaken; Lauterbrunnen; Lucerna.","Muito cara em agosto.","vale se preço estiver bom"),
+  trip("t-078","w-2027-08","Chamonix","França","Alpes verdes","Média","Agosto 2027",0,"Boa opção de Alpes.","Chamonix; trilhas; montanhas.","Cheio em agosto.","vale se preço estiver bom"),
+  trip("t-079","w-2027-08","Áustria","Áustria","Alpes verdes","Média","Agosto 2027",0,"Boa alternativa.","Áustria alpina; Hallstatt/Innsbruck.","Alta temporada; custo e logística.","vale se preço estiver bom"),
+  trip("t-080","w-2027-08","Eslovênia","Eslovênia","Alpes verdes / Cultura","Média","Agosto 2027",0,"Boa, mas Bled fica cheio.","Bled + Ljubljana.","Bled fica cheio.","vale se preço estiver bom"),
+
+  trip("t-081","w-2027-final","Grécia completa — Athens + Santorini + Zakynthos","Grécia","Viagem final / Mediterrâneo","Máxima","melhor com pelo menos 7 a 10 dias",0,"Ideal se for fim de agosto/setembro. Melhor com pelo menos 7 a 10 dias.","Athens + Santorini + Zakynthos.","Pode ser caro; exige tempo e logística entre ilhas.","vale se preço estiver bom"),
+  trip("t-082","w-2027-final","Croácia + Eslovênia — Split + Dubrovnik + Lago Bled + Ljubljana","Croácia / Eslovênia","Viagem final / Mediterrâneo / Natureza","Máxima","janela grande final",0,"Excelente combinação de mar + natureza.","Split + Dubrovnik + Lago Bled + Ljubljana.","Logística entre países/cidades; precisa planejamento.","vale"),
+  trip("t-083","w-2027-final","Itália sonho — Roma + Vaticano + Amalfi/Positano + Polignano/Monopoli","Itália","Viagem final / Cultura / Mediterrâneo","Máxima","janela grande final",0,"Muito forte se for setembro.","Roma + Vaticano + Amalfi/Positano + Polignano/Monopoli.","Amalfi/Positano pode ser caro; roteiro longo.","vale se preço estiver bom"),
+  trip("t-084","w-2027-final","Dolomites + Veneza + Lago di Garda/Lago di Braies","Itália","Viagem final / Alpes verdes / Cultura","Máxima","janela grande final",0,"Perfeito para natureza + cidade italiana.","Dolomites + Veneza + Lago di Garda/Lago di Braies.","Logística alpina e custo; precisa reservar.","vale"),
+  trip("t-085","w-2027-final","Islândia verão/final de verão","Islândia","Viagem final / Natureza","Média","janela grande final",0,"Boa se você quiser paisagem diferente sem neve. Para Iceland snow, deixar para inverno.","Islândia no verão/final de verão; paisagens sem neve.","Caro; não entrega a experiência snow se esse for o objetivo.","só se for sonho","Para Iceland snow, deixar para inverno.")
+];
+
+const scenarios = [
+  { id:"s-conservador", title:"Conservador e controlado", desc:"França + opções curtas para proteger o orçamento.", tripIds:["t-009","t-013","t-036","t-046","t-059"] },
+  { id:"s-equilibrado", title:"Equilibrado premium", desc:"Uma grande viagem em época certa + viagens médias/curtas.", tripIds:["t-014","t-023","t-029","t-036","t-052"] },
+  { id:"s-natureza", title:"Natureza e Alpes verdes", desc:"Foco em Suíça, Dolomites, Chamonix, Eslovênia e Áustria nas janelas certas.", tripIds:["t-014","t-020","t-027","t-064","t-073"] },
+  { id:"s-mediterraneo", title:"Mediterrâneo estético", desc:"Maio/setembro/primavera com Riviera, Malta, Grécia, Croácia e Espanha.", tripIds:["t-001","t-005","t-023","t-024","t-047","t-052"] },
+  { id:"s-sonho", title:"Sonho caro", desc:"Seleciona opções de grande impacto emocional, mas com alerta financeiro.", tripIds:["t-018","t-024","t-034","t-081"] },
+  { id:"s-final", title:"Viagem final antes do Brasil", desc:"Usa a janela final como viagem memorável, não viagem média.", tripIds:["t-082"] }
+];
+
+const rankMax = [
+  "Suíça verde — junho ou setembro, não inverno.",
+  "Dolomites — final de junho, julho ou setembro.",
+  "Croácia — junho ou setembro.",
+  "Grécia — junho ou setembro.",
+  "Grenoble ski — janeiro a março.",
+  "Riviera / Marseille / Malta — maio ou setembro.",
+  "Itália cultural — Toussaint ou primavera."
+];
+const rankPrice = [
+  "Lapônia / Islândia;",
+  "Suíça em julho/agosto;",
+  "Santorini / Amalfi / Dubrovnik em agosto;",
+  "GP de Mônaco;",
+  "Agosto 2027."
+];
+
+let selected = JSON.parse(localStorage.getItem("tripPlannerSelected") || "[]");
+let realPrices = JSON.parse(localStorage.getItem("tripPlannerPrices") || "{}");
+let weatherNotes = JSON.parse(localStorage.getItem("tripPlannerWeather") || "{}");
+let tripNotes = JSON.parse(localStorage.getItem("tripPlannerTripNotes") || "{}");
+let quickMode = "";
+
+function euro(n){
+  const val = Number(n || 0);
+  return val.toLocaleString("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
+}
+function scrollToId(id){ document.getElementById(id).scrollIntoView({behavior:"smooth"}); }
+function getWindow(id){ return windows.find(w => w.id === id); }
+function getTrip(id){ return trips.find(t => t.id === id); }
+function qualityClass(q){ return q === "Excelente" ? "excellent" : q === "Boa" ? "good" : q === "Média" ? "medium" : "bad"; }
+function visualClass(type){
+  const t = type.toLowerCase();
+  if(t.includes("neve") || t.includes("ski") || t.includes("aurora") || t.includes("natal")) return "neve";
+  if(t.includes("alpes") || t.includes("natureza")) return "alpes";
+  if(t.includes("cultura") || t.includes("cidade")) return "cultura";
+  if(t.includes("final")) return "final";
+  return "mediterraneo";
+}
+function priorityScore(priority){ return {"Máxima":5,"Alta":4,"Média":3,"Baixa":2}[priority] || 3; }
+function qualityScore(q){ return {"Excelente":5,"Boa":4,"Média":3,"Ruim":1}[q] || 3; }
+function suggestedRange(t){
+  // Faixas orientativas usadas só para visualização e simulação quando não há preço real.
+  // Não altera destinos, datas nem relação lugar/feriado.
+  const name = t.name.toLowerCase();
+  const country = t.country.toLowerCase();
+  const type = t.type.toLowerCase();
+  const w = getWindow(t.windowId);
+  const wdate = (w.date + " " + w.name).toLowerCase();
+
+  if(name.includes("nice") && name.includes("monaco") && t.windowId === "w-2026-05-08") return [350,370];
+  if(name.includes("nice") || name.includes("riviera")) return wdate.includes("2027") ? [350,700] : [350,650];
+  if(name.includes("marseille") || name.includes("cassis") || name.includes("calanques")) return [250,500];
+  if(name.includes("colmar") || name.includes("strasbourg")) return wdate.includes("natal") || wdate.includes("dezembro") ? [350,750] : [120,450];
+  if(country.includes("malta")) return wdate.includes("setembro") ? [750,1100] : wdate.includes("março") ? [650,1000] : [450,850];
+  if(name.includes("mallorca")) return [500,900];
+  if(country.includes("espanha") || name.includes("barcelona") || name.includes("valencia") || name.includes("madrid")) return wdate.includes("primavera") || wdate.includes("março") ? [650,1000] : [350,1100];
+  if(name.includes("chamonix")) return wdate.includes("julho") ? [550,900] : [350,800];
+  if(country.includes("suíça") || name.includes("suíça")) {
+    if(wdate.includes("agosto")) return [1000,1600];
+    if(wdate.includes("julho")) return [850,1500];
+    if(wdate.includes("setembro")) return [900,1400];
+    return [650,1300];
   }
-
-  function saveSelected() {
-    try { localStorage.setItem('selectedTripsV3', JSON.stringify(Array.from(selected))); } catch (e) {}
+  if(name.includes("dolomites") || name.includes("braies") || name.includes("garda")) {
+    if(wdate.includes("agosto") || wdate.includes("julho")) return [900,1600];
+    if(wdate.includes("setembro") || wdate.includes("final")) return [850,1400];
+    return [650,1250];
   }
-
-  function euro(n) {
-    var value = Number(n) || 0;
-    try {
-      return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(value);
-    } catch (e) {
-      return '€' + Math.round(value);
-    }
+  if(country.includes("eslovênia") || name.includes("bled") || name.includes("ljubljana")) return [500,1050];
+  if(country.includes("áustria") || name.includes("innsbruck") || name.includes("hallstatt")) return wdate.includes("dezembro") || wdate.includes("janeiro") ? [700,1300] : [550,1150];
+  if(country.includes("croácia") || name.includes("split") || name.includes("dubrovnik")) return wdate.includes("final") ? [1200,2000] : [800,1300];
+  if(country.includes("grécia") || name.includes("santorini") || name.includes("zakynthos") || name.includes("athens")) return wdate.includes("final") ? [1400,2300] : [850,1500];
+  if(country.includes("islândia")) return [1300,2300];
+  if(country.includes("finlândia") || name.includes("lapônia")) return [1500,2500];
+  if(name.includes("grenoble") || name.includes("ski")) return [450,900];
+  if(country.includes("polônia") || name.includes("krakow")) return [400,750];
+  if(country.includes("itália") || name.includes("roma") || name.includes("veneza") || name.includes("vaticano") || name.includes("polignano") || name.includes("amalfi")) {
+    if(name.includes("amalfi") || name.includes("positano") || wdate.includes("final")) return [1200,2200];
+    if(wdate.includes("setembro")) return [800,1200];
+    return [700,1250];
   }
+  if(type.includes("final")) return [1200,2200];
+  if(type.includes("neve") || type.includes("ski")) return [500,1500];
+  if(type.includes("alpes")) return [600,1200];
+  if(type.includes("mediterrâneo")) return [500,1100];
+  return [400,1000];
+}
+function priceInfo(t){
+  const real = Number(realPrices[t.id]);
+  if(real > 0) return {value: real, min: real, max: real, label: euro(real), kind: "preço real", source: "manual"};
+  if(t.priceMin !== null && t.priceMax !== null) return {value: (t.priceMin + t.priceMax) / 2, min: t.priceMin, max: t.priceMax, label: euro(t.priceMin) + "–" + euro(t.priceMax), kind: "faixa informada", source: "informado"};
+  const r = suggestedRange(t);
+  return {value: (r[0] + r[1]) / 2, min: r[0], max: r[1], label: euro(r[0]) + "–" + euro(r[1]), kind: "faixa orientativa", source: "estimativa"};
+}
+function costValue(tripObj){ return priceInfo(tripObj).value; }
+function costLabel(t){ return priceInfo(t).label; }
+function priceSourceLabel(t){ return priceInfo(t).kind; }
+function costCategory(value){
+  if(!value || value <= 0) return "sem preço informado";
+  if(value <= 500) return "econômica";
+  if(value <= 900) return "média";
+  if(value <= 1300) return "cara possível";
+  return "luxo/sonho";
+}
+function decisionClass(t){
+  const c = costValue(t);
+  const rec = (t.recommendation || "").toLowerCase();
+  if(rec.includes("só se for sonho") || c > 1500) return "dream";
+  if(rec.includes("não priorizar")) return "stop";
+  if(rec.includes("preço estiver bom") || c > 900) return "wait";
+  return "go";
+}
+function decisionTextShort(t){
+  const cls = decisionClass(t);
+  if(cls === "go") return "vale priorizar";
+  if(cls === "wait") return "só com bom preço";
+  if(cls === "dream") return "sonho/luxo";
+  return "não priorizar";
+}
+function strategicScore(t){
+  const w = getWindow(t.windowId);
+  const cost = costValue(t);
+  const costScore = cost <= 0 ? 3 : cost <= 500 ? 5 : cost <= 900 ? 4 : cost <= 1300 ? 2.5 : 1.2;
+  const congesScore = t.conges === 0 ? 5 : t.conges === 1 ? 4 : t.conges === 2 ? 3 : 2;
+  const recBonus = decisionClass(t) === "go" ? 0.35 : decisionClass(t) === "wait" ? 0.1 : decisionClass(t) === "dream" ? -0.15 : -0.3;
+  const score = (priorityScore(t.priority)*0.34 + qualityScore(w.quality)*0.26 + costScore*0.22 + congesScore*0.18 + recBonus) * 20;
+  return Math.max(1, Math.min(100, Math.round(score)));
+}
 
-  function findWindow(id) {
-    for (var i = 0; i < windowsData.length; i++) if (windowsData[i].id === id) return windowsData[i];
-    return windowsData[0];
+function renderWindows(){
+  const grid = document.getElementById("windowsGrid");
+  grid.innerHTML = windows.map(w => `
+    <article class="window-card">
+      <div class="card-top">
+        <h3 class="card-title">${w.date} — ${w.name}</h3>
+        <p class="card-sub">Janela ideal: ${w.ideal}</p>
+      </div>
+      <div class="card-body">
+        <div class="meta">
+          <span class="badge ${qualityClass(w.quality)}">${w.quality}</span>
+          <span class="badge">${w.duration}</span>
+          <span class="badge">${w.conges} congé(s)</span>
+          <span class="badge">${w.typeIdeal}</span>
+        </div>
+        <p><strong>Estratégia:</strong> ${w.observation}</p>
+        <p class="small-text muted"><strong>Teletrabalho:</strong> ${w.telework}</p>
+        <button class="btn small" onclick="filterByWindow('${w.id}')">Ver opções dessa janela</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function fillFilters(){
+  const winSel = document.getElementById("windowFilter");
+  windows.forEach(w => winSel.insertAdjacentHTML("beforeend", `<option value="${w.id}">${w.date} — ${w.name}</option>`));
+  const types = [...new Set(trips.map(t => t.type))].sort();
+  const countries = [...new Set(trips.map(t => t.country))].sort();
+  const priorities = [...new Set(trips.map(t => t.priority))].sort((a,b)=>priorityScore(b)-priorityScore(a));
+  types.forEach(v => document.getElementById("typeFilter").insertAdjacentHTML("beforeend", `<option>${v}</option>`));
+  countries.forEach(v => document.getElementById("countryFilter").insertAdjacentHTML("beforeend", `<option>${v}</option>`));
+  priorities.forEach(v => document.getElementById("priorityFilter").insertAdjacentHTML("beforeend", `<option>${v}</option>`));
+}
+
+function passesFilters(t){
+  const q = document.getElementById("searchInput").value.trim().toLowerCase();
+  const wf = document.getElementById("windowFilter").value;
+  const tf = document.getElementById("typeFilter").value;
+  const cf = document.getElementById("countryFilter").value;
+  const pf = document.getElementById("priorityFilter").value;
+  const max = Number(document.getElementById("budgetFilter").value);
+  const qf = document.getElementById("qualityFilter").value;
+  const w = getWindow(t.windowId);
+  const text = [t.name,t.country,t.type,t.priority,t.why,t.route,t.risk,t.recommendation,w.date,w.name,w.observation].join(" ").toLowerCase();
+  if(quickMode === "cheap" && costValue(t) > 500) return false;
+  if(quickMode === "best" && !(strategicScore(t) >= 84 && costValue(t) <= 1000)) return false;
+  if(quickMode === "excellent" && w.quality !== "Excelente") return false;
+  if(quickMode === "max" && t.priority !== "Máxima") return false;
+  if(quickMode === "missing" && realPrices[t.id]) return false;
+  if(q && !text.includes(q)) return false;
+  if(wf && t.windowId !== wf) return false;
+  if(tf && t.type !== tf) return false;
+  if(cf && t.country !== cf) return false;
+  if(pf && t.priority !== pf) return false;
+  if(qf && w.quality !== qf) return false;
+  if(max > 0){
+    const c = costValue(t);
+    if(c <= 0) return false;
+    if(c > max) return false;
   }
+  return true;
+}
 
-  function findTrip(id) {
-    id = Number(id);
-    for (var i = 0; i < trips.length; i++) if (trips[i].id === id) return trips[i];
-    return null;
+function renderTrips(){
+  const grid = document.getElementById("tripsGrid");
+  const filtered = trips.filter(passesFilters);
+  document.getElementById("tripCount").textContent = filtered.length;
+  renderTopRecommendations(filtered);
+  if(!filtered.length){ grid.innerHTML = `<div class="empty">Nenhuma opção encontrada com estes filtros.</div>`; return; }
+  grid.innerHTML = filtered.map(t => {
+    const w = getWindow(t.windowId);
+    const isSel = selected.includes(t.id);
+    const real = realPrices[t.id] || "";
+    const score = strategicScore(t);
+    const info = priceInfo(t);
+    const c = costValue(t);
+    const decision = decisionTextShort(t);
+    const dClass = decisionClass(t);
+    const scoreWidth = Math.max(5, Math.min(100, score));
+    return `
+    <article class="trip-card ${isSel ? "selected" : ""} ${score >= 86 && c <= 1000 ? "decision-best" : ""}">
+      <div class="trip-visual ${visualClass(t.type)}"></div>
+      <div class="card-body">
+        <h3 class="card-title">${t.name}</h3>
+        <p class="card-sub">${t.country} · ${w.date} — ${w.name}</p>
+        <div class="decision-strip">
+          <span class="decision-pill ${dClass}">${decision}</span>
+          <span class="decision-pill">${info.kind}</span>
+          <span class="decision-pill ${qualityClass(w.quality)}">janela ${w.quality}</span>
+        </div>
+        <div class="price-hero">
+          <div><span>Custo para simulação</span><strong>${info.label}</strong></div>
+          <div class="price-kind"><span>${costCategory(c)}</span><br><span>${t.conges} congé(s)</span></div>
+        </div>
+        <div class="value-meter"><div style="width:${scoreWidth}%"></div></div>
+        <div class="card-decision-summary">
+          <div class="mini-kpi"><span>Score decisão</span><strong>${score}/100</strong></div>
+          <div class="mini-kpi"><span>Prioridade</span><strong>${t.priority}</strong></div>
+          <div class="mini-kpi"><span>Tipo</span><strong>${t.type}</strong></div>
+          <div class="mini-kpi"><span>Preço médio</span><strong>${euro(c)}</strong></div>
+        </div>
+        <div class="price-row">
+          <div class="field"><label>Preço real encontrado</label><input type="number" min="0" value="${real}" placeholder="€" onchange="setRealPrice('${t.id}', this.value)" /></div>
+          <div class="field"><label>Previsão/clima manual</label><input type="text" value="${weatherNotes[t.id] || ""}" placeholder="Ex: sol, chuva, 18°C" onchange="setWeather('${t.id}', this.value)" /></div>
+        </div>
+        <p><strong>Motivo:</strong> ${t.why}</p>
+        <p class="small-text muted"><strong>Risco principal:</strong> ${t.risk}</p>
+        <div class="export-actions">
+          <button class="btn small ${isSel ? "danger" : "success"}" onclick="toggleTrip('${t.id}')">${isSel ? "Remover" : "Selecionar viagem"}</button>
+          <button class="btn small ghost" onclick="openDetails('${t.id}')">Detalhes</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+}
+
+function quickFilter(mode){
+  quickMode = mode;
+  ["searchInput","windowFilter","typeFilter","countryFilter","priorityFilter","budgetFilter","qualityFilter"].forEach(id => document.getElementById(id).value = "");
+  renderTrips();
+  scrollToId("destinos");
+}
+function renderTopRecommendations(filtered){
+  const el = document.getElementById("topRecommendations");
+  if(!el) return;
+  const top = filtered
+    .slice()
+    .sort((a,b) => strategicScore(b) - strategicScore(a) || costValue(a) - costValue(b))
+    .slice(0,3);
+  if(!top.length){ el.innerHTML = `<div class="empty">Use os filtros para exibir recomendações.</div>`; return; }
+  el.innerHTML = top.map((t,i) => {
+    const w = getWindow(t.windowId);
+    return `<div class="recommendation-item">
+      <div class="rank-dot">${i+1}</div>
+      <div><h4>${t.name}</h4><p>${w.date} · ${t.country} · score ${strategicScore(t)}/100</p></div>
+      <div class="price-mini">${costLabel(t)}</div>
+    </div>`;
+  }).join("");
+}
+function renderCockpit(){
+  const free = Number(document.getElementById("freeBudget").value) || 0;
+  const reserve = Number(document.getElementById("safetyReserve").value) || 0;
+  const extra = Number(document.getElementById("manualExtra").value) || 0;
+  const available = Math.max(0, free - reserve);
+  const selectedTrips = selected.map(getTrip).filter(Boolean);
+  const totalTrips = selectedTrips.reduce((sum,t) => sum + costValue(t), 0);
+  const total = totalTrips + extra;
+  const remaining = available - total;
+  const status = remaining > 1200 ? "OK" : remaining >= 500 ? "Justo" : remaining >= 0 ? "Atenção" : "Estourou";
+  const setText = (id, value) => { const node = document.getElementById(id); if(node) node.textContent = value; };
+  setText("cockpitSelected", String(selectedTrips.length));
+  setText("cockpitPlanned", euro(total));
+  setText("cockpitRemaining", euro(remaining));
+  setText("cockpitStatus", status);
+}
+
+
+function filterByWindow(id){
+  document.getElementById("windowFilter").value = id;
+  renderTrips();
+  scrollToId("destinos");
+}
+function clearFilters(){
+  quickMode = "";
+  ["searchInput","windowFilter","typeFilter","countryFilter","priorityFilter","budgetFilter","qualityFilter"].forEach(id => document.getElementById(id).value = "");
+  renderTrips();
+}
+function setRealPrice(id, value){
+  if(value === "" || Number(value) <= 0) delete realPrices[id]; else realPrices[id] = Number(value);
+  localStorage.setItem("tripPlannerPrices", JSON.stringify(realPrices));
+  renderTrips();
+  updateBudget();
+}
+function setWeather(id, value){
+  if(!value) delete weatherNotes[id]; else weatherNotes[id] = value;
+  localStorage.setItem("tripPlannerWeather", JSON.stringify(weatherNotes));
+}
+function setTripNote(id, value){
+  if(!value) delete tripNotes[id]; else tripNotes[id] = value;
+  localStorage.setItem("tripPlannerTripNotes", JSON.stringify(tripNotes));
+}
+function toggleTrip(id){
+  selected = selected.includes(id) ? selected.filter(x => x !== id) : [...selected, id];
+  saveSelection();
+  renderTrips();
+  updateBudget();
+}
+function saveSelection(){ localStorage.setItem("tripPlannerSelected", JSON.stringify(selected)); }
+function clearSelection(){ selected = []; saveSelection(); renderTrips(); updateBudget(); }
+
+function updateBudget(){
+  const free = Number(document.getElementById("freeBudget").value) || 0;
+  const reserve = Number(document.getElementById("safetyReserve").value) || 0;
+  const extra = Number(document.getElementById("manualExtra").value) || 0;
+  const available = Math.max(0, free - reserve);
+  const selectedTrips = selected.map(getTrip).filter(Boolean);
+  const totalTrips = selectedTrips.reduce((sum,t) => sum + costValue(t), 0);
+  const total = totalTrips + extra;
+  const remaining = available - total;
+  const pct = available > 0 ? Math.min(100, Math.max(0, (total / available) * 100)) : 0;
+  document.getElementById("availableBudget").textContent = euro(available);
+  document.getElementById("plannedTotal").textContent = euro(total);
+  document.getElementById("remainingBudget").textContent = euro(remaining);
+  document.getElementById("budgetProgress").style.width = pct + "%";
+  document.getElementById("heroTotal").textContent = euro(free);
+  document.getElementById("heroReserve").textContent = euro(reserve);
+  document.getElementById("heroTravel").textContent = euro(available);
+
+  const verdict = document.getElementById("budgetVerdict");
+  verdict.className = "alert";
+  if(remaining > 1200){ verdict.textContent = "Plano saudável."; verdict.classList.add("success"); }
+  else if(remaining >= 500){ verdict.textContent = "Plano possível, mas justo."; }
+  else if(remaining >= 0){ verdict.textContent = "Atenção: margem muito pequena."; }
+  else { verdict.textContent = "Plano estourado. Corte uma viagem cara ou troque por uma opção econômica."; verdict.classList.add("danger"); }
+
+  renderSelectedList(selectedTrips);
+  renderWarnings(selectedTrips, remaining);
+  localStorage.setItem("tripPlannerBudget", JSON.stringify({free,reserve,extra}));
+  renderCockpit();
+}
+function renderSelectedList(list){
+  const el = document.getElementById("selectedList");
+  if(!list.length){ el.innerHTML = `<div class="empty">Nenhuma viagem selecionada ainda.</div>`; return; }
+  const subtotal = list.reduce((sum,t) => sum + costValue(t), 0);
+  el.innerHTML = list.map(t => {
+    const w = getWindow(t.windowId);
+    const val = realPrices[t.id] || "";
+    const info = priceInfo(t);
+    return `<div class="selected-item">
+      <div class="selected-item-top">
+        <div><strong>${t.name}</strong><div class="small-text muted">${w.date} — ${w.name} · ${t.country}</div></div>
+        <button class="btn small danger" onclick="toggleTrip('${t.id}')">Remover</button>
+      </div>
+      <div class="price-row">
+        <div class="field"><label>Preço real selecionado</label><input type="number" min="0" value="${val}" placeholder="€" onchange="setRealPrice('${t.id}', this.value)"></div>
+        <div class="field"><label>Nota pessoal da viagem</label><input type="text" value="${tripNotes[t.id] || ""}" placeholder="Ex: link, voo, dúvida" onchange="setTripNote('${t.id}', this.value)"></div>
+      </div>
+      <div class="small-text">Custo usado: <strong>${info.label}</strong> (${info.kind}) · Categoria: <strong>${costCategory(costValue(t))}</strong> · Score: <strong>${strategicScore(t)}/100</strong></div>
+    </div>`;
+  }).join("") + `<div class="selected-total-footer"><span class="small-text muted">Subtotal das viagens selecionadas</span><strong>${euro(subtotal)}</strong></div>`;
+}
+function renderWarnings(list, remaining){
+  const el = document.getElementById("budgetWarnings");
+  const warnings = [];
+  list.forEach(t => {
+    const c = costValue(t);
+    const w = getWindow(t.windowId);
+    if(c > 1300) warnings.push(`${t.name}: viagem luxo/sonho acima de €1.300.`);
+    if(c > 900 && w.date.includes("2026") && !w.date.includes("dezembro") && !w.date.includes("Noël")) warnings.push(`${t.name}: viagem cara antes de setembro/dezembro de 2026 pode comprometer janelas futuras.`);
+    if(t.name.toLowerCase().includes("lapônia") || t.name.toLowerCase().includes("islândia")) warnings.push(`${t.name}: essa viagem pode substituir 2–3 viagens médias.`);
+    if(t.name.toLowerCase().includes("gp de mônaco")) warnings.push(`${t.name}: luxo/extra, não prioridade financeira.`);
+  });
+  if(remaining < 500) warnings.push("Margem financeira baixa: revise viagens caras ou custos extras.");
+  el.innerHTML = warnings.map(w => `<div class="alert ${remaining < 0 ? "danger" : ""}">${w}</div>`).join("");
+}
+
+function openDetails(id){
+  const t = getTrip(id); const w = getWindow(t.windowId);
+  document.getElementById("modalTitle").textContent = t.name;
+  document.getElementById("modalSubtitle").textContent = `${t.country} · ${w.date} — ${w.name}`;
+  const cost = costValue(t);
+  document.getElementById("modalBody").innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-box"><strong>Janela</strong><p>${w.ideal}</p><p class="small-text muted">${DATA_NOTE}</p></div>
+      <div class="detail-box"><strong>Qualidade</strong><p>${w.quality} · ${w.typeIdeal}</p><p class="small-text muted">${DATA_NOTE}</p></div>
+      <div class="detail-box"><strong>Custo estimado</strong><p>${costLabel(t)}</p><p class="small-text muted">${priceInfo(t).source === "estimativa" ? "Faixa orientativa para decisão; substitua pelo preço real quando encontrar." : DATA_NOTE}</p></div>
+      <div class="detail-box"><strong>Preço real atual</strong><p>${cost > 0 ? euro(cost) : "Ainda não preenchido"}</p><p class="small-text muted">${ESTIMATE_NOTE}</p></div>
+    </div>
+    <div class="detail-box"><strong>Por que ir nessa época</strong><p>${t.why}</p></div>
+    <div class="detail-box"><strong>Por que não ir fora dessa época</strong><p>${t.whyNot || "Não há restrição específica informada além da estratégia geral da janela."}</p></div>
+    <div class="detail-grid">
+      <div class="detail-box"><strong>Risco financeiro</strong><p>${cost > 1300 ? "Luxo/sonho: pode consumir grande parte do orçamento." : cost > 900 ? "Cara, mas possível se for prioridade." : cost > 0 ? "Controlável dentro do orçamento, dependendo do total selecionado." : "Preço ainda não informado; risco financeiro depende do valor real encontrado."}</p></div>
+      <div class="detail-box"><strong>Risco climático/logístico</strong><p>${t.risk}</p></div>
+    </div>
+    <div class="detail-box"><strong>Roteiro sugerido</strong><p>${t.route}</p></div>
+    <div class="detail-box"><strong>Previsão do tempo manual</strong><p>${weatherNotes[t.id] || "Campo ainda vazio. Como o arquivo é offline, preencha manualmente depois de consultar a previsão real."}</p></div>
+    <div class="alert"><strong>Recomendação crítica:</strong> ${t.recommendation}.</div>
+  `;
+  document.getElementById("modalBackdrop").style.display = "block";
+}
+function closeModal(e){
+  if(e.target.id === "modalBackdrop" || e.target.classList.contains("close-btn")) document.getElementById("modalBackdrop").style.display = "none";
+}
+
+function renderScenarios(){
+  const el = document.getElementById("scenariosGrid");
+  el.innerHTML = scenarios.map(s => `
+    <article class="scenario-card" onclick="applyScenario('${s.id}')">
+      <h3 style="margin:0 0 6px;">${s.title}</h3>
+      <p class="muted">${s.desc}</p>
+      <div class="meta"><span class="badge">${s.tripIds.length} viagens</span><span class="badge">Clique para aplicar</span></div>
+    </article>
+  `).join("");
+}
+function applyScenario(id){
+  const sc = scenarios.find(s => s.id === id);
+  selected = [...new Set(sc.tripIds)];
+  saveSelection();
+  renderTrips();
+  updateBudget();
+  scrollToId("simulador");
+}
+function renderRanking(){
+  document.getElementById("rankMax").innerHTML = rankMax.map(x => `<div class="rank-item">${x}</div>`).join("");
+  document.getElementById("rankPrice").innerHTML = rankPrice.map(x => `<div class="rank-item">${x}</div>`).join("");
+}
+
+function planObject(){
+  const free = Number(document.getElementById("freeBudget").value) || 0;
+  const reserve = Number(document.getElementById("safetyReserve").value) || 0;
+  const extra = Number(document.getElementById("manualExtra").value) || 0;
+  const selectedTrips = selected.map(getTrip).filter(Boolean).map(t => ({
+    destino: t.name,
+    pais: t.country,
+    janela: `${getWindow(t.windowId).date} — ${getWindow(t.windowId).name}`,
+    tipo: t.type,
+    prioridade: t.priority,
+    conges: t.conges,
+    precoReal: realPrices[t.id] || null,
+    climaManual: weatherNotes[t.id] || "",
+    nota: tripNotes[t.id] || "",
+    recomendacao: t.recommendation
+  }));
+  const total = selectedTrips.reduce((sum,t) => sum + (Number(t.precoReal) || 0), 0) + extra;
+  return { orcamentoLivreTotal: free, reservaSeguranca: reserve, orcamentoDisponivelViagens: Math.max(0, free-reserve), custoExtraManual: extra, totalPlanejado: total, saldoRestante: Math.max(0, free-reserve)-total, viagensSelecionadas: selectedTrips };
+}
+function copyPlan(){
+  const p = planObject();
+  const text = `Plano selecionado\nOrçamento livre: ${euro(p.orcamentoLivreTotal)}\nReserva: ${euro(p.reservaSeguranca)}\nDisponível para viagens: ${euro(p.orcamentoDisponivelViagens)}\nTotal planejado: ${euro(p.totalPlanejado)}\nSaldo restante: ${euro(p.saldoRestante)}\n\nViagens:\n` + p.viagensSelecionadas.map(v => `- ${v.destino} | ${v.janela} | ${v.pais} | preço: ${v.precoReal ? euro(v.precoReal) : "a preencher"} | recomendação: ${v.recomendacao}`).join("\n");
+  navigator.clipboard.writeText(text).then(() => document.getElementById("copyStatus").textContent = "Plano copiado para a área de transferência.").catch(() => document.getElementById("copyStatus").textContent = "Não foi possível copiar automaticamente; use exportar JSON.");
+}
+function exportJSON(){
+  const blob = new Blob([JSON.stringify(planObject(), null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "plano_viagens_europa_2026_2027.json"; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function restoreBudget(){
+  const saved = JSON.parse(localStorage.getItem("tripPlannerBudget") || "null");
+  if(saved){
+    document.getElementById("freeBudget").value = saved.free ?? 5692;
+    document.getElementById("safetyReserve").value = saved.reserve ?? 700;
+    document.getElementById("manualExtra").value = saved.extra ?? 0;
   }
-
-  function qualityClass(q) { return q === 'good' ? 'good' : q === 'bad' ? 'bad' : 'med'; }
-  function qualityText(q) { return q === 'good' ? 'boa' : q === 'bad' ? 'ruim' : 'média'; }
-  function typeName(t) { return ({ mediterraneo: 'Mediterrâneo', verde: 'Alpes verdes', cultura: 'Cidade/cultura', neve: 'Neve/ski', caro: 'Final/luxo' })[t] || t; }
-  function typePill(t) { return t === 'verde' ? 'good' : t === 'neve' ? 'snow' : t === 'cultura' ? 'culture' : t === 'caro' ? 'bad' : 'med'; }
-  function priorityLabel(p) { return p === 'alta' ? 'Alta' : p === 'media' ? 'Média' : 'Baixa'; }
-
-  function go(id) {
-    var el = safeGet(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  function renderWindows() {
-    var el = safeGet('windowList');
-    if (!el) return;
-    el.innerHTML = windowsData.map(function (w) {
-      return '<div class="window">' +
-        '<div><div class="date">' + w.date + '</div><span class="pill ' + qualityClass(w.quality) + '">' + qualityText(w.quality) + '</span></div>' +
-        '<div><h3>' + w.name + ' • ' + w.duration + '</h3><p><b>Estratégia:</b> ' + w.strategy + '<br><b>Melhores candidatos:</b> ' + w.best + '</p></div>' +
-        '<button class="filter-window" data-window="' + w.id + '">Ver opções</button>' +
-      '</div>';
-    }).join('');
-  }
-
-  function setupWindowSelect() {
-    var s = safeGet('windowFilter');
-    if (!s) return;
-    s.innerHTML = '<option value="all">Todas</option>' + windowsData.map(function (w) {
-      return '<option value="' + w.id + '">' + w.date + ' — ' + w.name + '</option>';
-    }).join('');
-  }
-
-  function filterWindow(id) {
-    var s = safeGet('windowFilter');
-    if (s) s.value = id;
-    go('opcoes');
-    renderCards();
-  }
-
-  function renderCards() {
-    var grid = safeGet('cards');
-    if (!grid) return;
-    var searchEl = safeGet('search');
-    var wEl = safeGet('windowFilter');
-    var typeEl = safeGet('typeFilter');
-    var priEl = safeGet('priorityFilter');
-    var budgetEl = safeGet('budgetFilter');
-
-    var search = searchEl ? searchEl.value.toLowerCase() : '';
-    var wv = wEl ? wEl.value : 'all';
-    var type = typeEl ? typeEl.value : 'all';
-    var pri = priEl ? priEl.value : 'all';
-    var b = budgetEl ? budgetEl.value : 'all';
-
-    var list = trips.filter(function (t) {
-      var w = findWindow(t.w);
-      var text = (t.title + ' ' + t.country + ' ' + t.why + ' ' + w.date + ' ' + w.name).toLowerCase();
-      return text.indexOf(search) !== -1 &&
-        (wv === 'all' || t.w === wv) &&
-        (type === 'all' || t.type === type) &&
-        (pri === 'all' || t.priority === pri) &&
-        (b === 'all' || t.price <= Number(b));
-    });
-
-    if (!list.length) {
-      grid.innerHTML = '<div class="panel box" style="grid-column:1/-1">Nenhuma opção com esses filtros.</div>';
-      updateBudget(true);
-      return;
-    }
-
-    grid.innerHTML = list.map(function (t) {
-      var w = findWindow(t.w);
-      var isSelected = selected.has(t.id);
-      return '<article class="card">' +
-        '<div class="card-img" style="background-image:url(\'' + t.img + '\')"><div class="tagrow"><span class="tag">' + w.date + '</span><span class="tag">' + t.country + '</span></div></div>' +
-        '<div class="body">' +
-          '<div><span class="pill ' + typePill(t.type) + '">' + typeName(t.type) + '</span> <span class="pill gold">Prioridade ' + priorityLabel(t.priority) + '</span></div>' +
-          '<h3>' + t.title + '</h3>' +
-          '<div class="meta"><span>📅 Janela: ' + w.name + ' • ' + t.days + '</span><span>🧳 Folga: ' + t.conges + '</span><span>💶 Estimativa: ' + t.range + '</span></div>' +
-          '<div class="why"><b>Por que faz sentido:</b> ' + t.why + '</div>' +
-          '<div class="price"><div><span class="small">Custo médio usado</span><br><strong>' + euro(t.price) + '</strong></div><span class="score">' + t.score + '</span></div>' +
-          '<div class="card-actions"><button class="toggle-trip ' + (isSelected ? 'selected' : '') + '" data-trip="' + t.id + '">' + (isSelected ? 'Selecionado ✓' : 'Selecionar') + '</button><button class="soft open-trip" data-trip="' + t.id + '">Detalhes</button></div>' +
-        '</div>' +
-      '</article>';
-    }).join('');
-
-    updateBudget(true);
-  }
-
-  function toggleTrip(id) {
-    id = Number(id);
-    if (selected.has(id)) selected.delete(id);
-    else selected.add(id);
-    saveSelected();
-    renderCards();
-  }
-
-  function clearSelected() {
-    selected.clear();
-    saveSelected();
-    renderCards();
-  }
-
-  function selectedTrips() {
-    return trips.filter(function (t) { return selected.has(t.id); });
-  }
-
-  function updateBudget(sync) {
-    if (sync === undefined) sync = true;
-    var spentEl = safeGet('spent');
-    if (sync && spentEl) {
-      spentEl.value = selectedTrips().reduce(function (a, t) { return a + t.price; }, 0);
-    }
-
-    var total = Number((safeGet('totalBudget') || {}).value || 0);
-    var reserve = Number((safeGet('reserve') || {}).value || 0);
-    var spent = Number((safeGet('spent') || {}).value || 0);
-    var extra = Number((safeGet('extra') || {}).value || 0);
-    var available = total - reserve;
-    var planned = spent + extra;
-    var remaining = available - planned;
-    var pct = available > 0 ? Math.min(100, Math.max(0, planned / available * 100)) : 0;
-
-    safeGet('available').textContent = euro(available);
-    safeGet('planned').textContent = euro(planned);
-    safeGet('remaining').textContent = euro(remaining);
-    safeGet('budgetBar').style.width = pct + '%';
-
-    var st = 'OK';
-    var v = 'Plano saudável: ainda existe margem para ajustar preços reais e imprevistos.';
-    if (remaining < 0) {
-      st = 'Estourou';
-      v = 'Seu plano passou do orçamento recomendado. Corte uma viagem cara ou troque por Chamonix, Marseille/Cassis, Colmar ou Krakow.';
-    } else if (remaining < 500) {
-      st = 'Atenção';
-      v = 'Margem muito pequena. Evite Lapônia/Islândia/Suíça cara sem nova entrada de dinheiro.';
-    } else if (remaining < 1200) {
-      st = 'Justo';
-      v = 'Cabe, mas a viagem final de 2027 precisa ser controlada.';
-    }
-    safeGet('status').textContent = st;
-    safeGet('verdict').textContent = v;
-    renderSelectedList();
-  }
-
-  function renderSelectedList() {
-    var el = safeGet('selectedList');
-    if (!el) return;
-    var arr = selectedTrips();
-    if (!arr.length) {
-      el.innerHTML = '<div class="small">Nenhuma viagem selecionada ainda.</div>';
-      return;
-    }
-    el.innerHTML = arr.map(function (t, i) {
-      return '<div class="rank-item"><div class="rank-num">' + (i + 1) + '</div><div><h4>' + t.title + '</h4><p>' + findWindow(t.w).date + ' • ' + t.range + '</p></div><button class="remove-trip" data-trip="' + t.id + '">Remover</button></div>';
-    }).join('');
-  }
-
-  function renderScenarios() {
-    var el = safeGet('scenarios');
-    if (!el) return;
-    el.innerHTML = scenarios.map(function (s, i) {
-      return '<div class="scenario apply-scenario" data-scenario="' + i + '"><h3>' + s.name + '</h3><div class="num">' + euro(s.cost) + '</div><p>' + s.desc + '</p><p class="small">Clique para aplicar este cenário.</p></div>';
-    }).join('');
-  }
-
-  function applyScenario(i) {
-    var s = scenarios[Number(i)];
-    if (!s) return;
-    selected = new Set(s.ids);
-    saveSelected();
-    renderCards();
-    go('simulador');
-  }
-
-  function renderRanking() {
-    var high = [
-      ['Suíça verde', 'Junho ou setembro, não inverno.'],
-      ['Dolomites', 'Final de junho, julho ou setembro.'],
-      ['Croácia', 'Junho ou setembro.'],
-      ['Grécia', 'Junho ou setembro.'],
-      ['Grenoble ski', 'Janeiro a março.']
-    ];
-    var caution = [
-      ['Lapônia/Islândia', 'Só como luxo ou se cortar 2–3 viagens médias.'],
-      ['Suíça em julho/agosto', 'Muito bonita, mas cara.'],
-      ['Santorini/Amalfi/Dubrovnik em agosto', 'Risco de preço alto e multidão.'],
-      ['GP de Mônaco', 'Só se F1 for sonho pessoal.'],
-      ['Agosto 2027', 'Só com promoção ou planejamento cedo.']
-    ];
-    safeGet('rankHigh').innerHTML = high.map(function (x, i) {
-      return '<div class="rank-item"><div class="rank-num">' + (i + 1) + '</div><div><h4>' + x[0] + '</h4><p>' + x[1] + '</p></div><span class="pill good">priorizar</span></div>';
-    }).join('');
-    safeGet('rankCaution').innerHTML = caution.map(function (x, i) {
-      return '<div class="rank-item"><div class="rank-num">' + (i + 1) + '</div><div><h4>' + x[0] + '</h4><p>' + x[1] + '</p></div><span class="pill bad">cuidado</span></div>';
-    }).join('');
-  }
-
-  function decisionText(t) {
-    if (t.price <= 500) return 'Boa opção se o preço real ficar próximo da estimativa. Ideal para manter o plano financeiro saudável.';
-    if (t.price <= 900) return 'Viagem média: vale se estiver na época certa e não bloquear uma janela premium futura.';
-    if (t.price <= 1300) return 'Viagem cara: só comprar se for prioridade real ou se você cortar outra viagem média.';
-    return 'Viagem luxo/sonho: precisa substituir 2 ou 3 viagens menores, não somar por impulso.';
-  }
-
-  function openTrip(id) {
-    var t = findTrip(id);
-    if (!t) return;
-    var w = findWindow(t.w);
-    safeGet('modalTitle').textContent = t.title;
-    safeGet('modalSub').textContent = w.date + ' • ' + w.name + ' • ' + t.country;
-    safeGet('modalBody').innerHTML =
-      '<div class="modal-grid">' +
-        '<div class="detail"><b>Preço estimado</b>' + t.range + '<br><span class="small">Custo médio usado na simulação: ' + euro(t.price) + '</span></div>' +
-        '<div class="detail"><b>Janela e folgas</b>' + t.days + '<br>' + t.conges + '</div>' +
-        '<div class="detail"><b>Por que faz sentido</b>' + t.why + '</div>' +
-        '<div class="detail"><b>Risco principal</b>' + t.risk + '</div>' +
-      '</div>' +
-      '<div class="detail"><b>Roteiro possível</b>' + t.route + '</div>' +
-      '<div class="detail"><b>Critério de decisão</b>' + decisionText(t) + '</div>' +
-      '<button class="modal-toggle-trip ' + (selected.has(t.id) ? 'selected' : '') + '" data-trip="' + t.id + '">' + (selected.has(t.id) ? 'Remover da simulação' : 'Adicionar à simulação') + '</button>';
-    safeGet('modal').classList.add('open');
-  }
-
-  function closeModal() {
-    safeGet('modal').classList.remove('open');
-  }
-
-  function resetFilters() {
-    safeGet('search').value = '';
-    safeGet('windowFilter').value = 'all';
-    safeGet('typeFilter').value = 'all';
-    safeGet('priorityFilter').value = 'all';
-    safeGet('budgetFilter').value = 'all';
-    renderCards();
-  }
-
-  function copyPlan() {
-    var text = selectedTrips().map(function (t) {
-      return findWindow(t.w).date + ' — ' + t.title + ' — ' + t.range;
-    }).join('\n');
-
-    if (!text) text = 'Nenhuma viagem selecionada.';
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(function () {
-        alert('Plano copiado.');
-      }).catch(function () {
-        fallbackCopy(text);
-      });
-    } else {
-      fallbackCopy(text);
-    }
-  }
-
-  function fallbackCopy(text) {
-    var area = document.createElement('textarea');
-    area.value = text;
-    document.body.appendChild(area);
-    area.select();
-    try { document.execCommand('copy'); alert('Plano copiado.'); }
-    catch (e) { alert(text); }
-    document.body.removeChild(area);
-  }
-
-  function saveNotes() {
-    try { localStorage.setItem('travelNotesV3', safeGet('notes').value); } catch (e) {}
-  }
-
-  function loadNotes() {
-    try { safeGet('notes').value = localStorage.getItem('travelNotesV3') || ''; } catch (e) {}
-  }
-
-  function bindEvents() {
-    document.addEventListener('click', function (e) {
-      var target = e.target;
-      if (!target) return;
-
-      if (target.matches('[data-go]')) go(target.getAttribute('data-go'));
-      if (target.id === 'printBtn') window.print();
-      if (target.classList.contains('filter-window')) filterWindow(target.getAttribute('data-window'));
-      if (target.classList.contains('toggle-trip')) toggleTrip(target.getAttribute('data-trip'));
-      if (target.classList.contains('open-trip')) openTrip(target.getAttribute('data-trip'));
-      if (target.classList.contains('remove-trip')) toggleTrip(target.getAttribute('data-trip'));
-      if (target.classList.contains('apply-scenario')) applyScenario(target.getAttribute('data-scenario'));
-      if (target.classList.contains('modal-toggle-trip')) { toggleTrip(target.getAttribute('data-trip')); openTrip(target.getAttribute('data-trip')); }
-      if (target.id === 'clearFiltersBtn') resetFilters();
-      if (target.id === 'clearSelectedBtn') clearSelected();
-      if (target.id === 'copyPlanBtn') copyPlan();
-      if (target.id === 'modalCloseBtn') closeModal();
-      if (target.id === 'modal') closeModal();
-    });
-
-    ['search', 'windowFilter', 'typeFilter', 'priorityFilter', 'budgetFilter'].forEach(function (id) {
-      var el = safeGet(id);
-      if (!el) return;
-      el.addEventListener(id === 'search' ? 'input' : 'change', renderCards);
-    });
-
-    ['totalBudget', 'reserve', 'extra'].forEach(function (id) {
-      var el = safeGet(id);
-      if (el) el.addEventListener('input', function () { updateBudget(true); });
-    });
-
-    var spent = safeGet('spent');
-    if (spent) spent.addEventListener('input', function () { updateBudget(false); });
-
-    var notes = safeGet('notes');
-    if (notes) notes.addEventListener('input', saveNotes);
-  }
-
-  function init() {
-    setupWindowSelect();
-    renderWindows();
-    renderScenarios();
-    renderRanking();
-    loadNotes();
-    bindEvents();
-    renderCards();
-    updateBudget(true);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
+}
+function init(){
+  renderWindows(); fillFilters(); renderScenarios(); renderRanking(); restoreBudget(); renderTrips(); updateBudget();
+  ["searchInput","windowFilter","typeFilter","countryFilter","priorityFilter","budgetFilter","qualityFilter"].forEach(id => document.getElementById(id).addEventListener("input", renderTrips));
+  ["freeBudget","safetyReserve","manualExtra"].forEach(id => document.getElementById(id).addEventListener("input", updateBudget));
+  const notes = document.getElementById("personalNotes");
+  notes.value = localStorage.getItem("tripPlannerNotes") || "";
+  notes.addEventListener("input", () => localStorage.setItem("tripPlannerNotes", notes.value));
+}
+init();
 </script>
 </body>
 </html>
