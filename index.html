@@ -223,6 +223,7 @@
     .rank-item { padding: 10px 12px; background: #fbfcfe; border: 1px solid var(--line); border-radius: 13px; }
 
     .notes textarea { min-height: 190px; resize: vertical; }
+    .city-notes textarea { min-height: 96px; resize: vertical; margin-bottom: 12px; }
     .export-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
 
     .modal-backdrop {
@@ -794,6 +795,7 @@ function euro(n){
   return val.toLocaleString("fr-FR", { style:"currency", currency:"EUR", maximumFractionDigits:0 });
 }
 function scrollToId(id){ document.getElementById(id).scrollIntoView({behavior:"smooth"}); }
+function escapeHTML(value){ return String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;"); }
 function getWindow(id){ return windows.find(w => w.id === id); }
 function getTrip(id){ return trips.find(t => t.id === id); }
 function qualityClass(q){ return q === "Excelente" ? "excellent" : q === "Boa" ? "good" : q === "Média" ? "medium" : "bad"; }
@@ -1001,6 +1003,7 @@ function renderTrips(){
           <div class="field"><label>Preço real encontrado</label><input type="number" min="0" value="${real}" placeholder="€" onchange="setRealPrice('${t.id}', this.value)" /></div>
           <div class="field"><label>Previsão/clima manual</label><input type="text" value="${weatherNotes[t.id] || ""}" placeholder="Ex: sol, chuva, 18°C" onchange="setWeather('${t.id}', this.value)" /></div>
         </div>
+        <div class="field city-notes"><label>Notas da cidade / conclusões</label><textarea placeholder="Anote aqui suas conclusões, links, horários, pontos positivos/negativos..." oninput="setTripNote('${t.id}', this.value)">${escapeHTML(tripNotes[t.id] || "")}</textarea></div>
         <p><strong>Motivo:</strong> ${t.why}</p>
         <p class="small-text muted"><strong>Risco principal:</strong> ${t.risk}</p>
         <div class="export-actions">
